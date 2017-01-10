@@ -1,0 +1,144 @@
+\documentclass{article}
+\input{503macros.tex}
+
+\begin{document}
+\begin{center}
+  {\LARGE CSC 503 Homework Assignment 4}\\[1pc]
+  Out: September 6, 2016 \\
+  Due: September 13, 2016 \\
+  \unityid{aagrawa8}
+\end{center}
+
+\begin{enumerate}
+
+\item \textbf{[25 points total]} Let $a$ and $b$ be constant symbols,
+  $f$ a function symbol with three arguments,
+  $g$ a function symbol with one argument,
+  $h$ a function symbol with two arguments,
+  $P$ a predicate symbol with three arguments, and
+  $Q$ a predicate symbol with two arguments, and
+  $x$, $y$, and $z$ variable symbols.
+  Indicate, for each of the following strings, which strings are
+  formulas in predicate logic, and state a reason for failure for
+  strings which are not.
+  No credit will be given for strings correctly identified as not
+  being formulas without correct identification of a reason why the
+  string is not a formula.
+  \begin{enumerate}
+  \item \textbf{[5 points]} $\exists y\ P(x,b,y) \land P(h(b,x),h(y,b),g(y)(a))$\\
+  This formula is \textbf{not valid} since $g(y)$ is in multiplication with $a$, constant symbol.
+
+  \item \textbf{[5 points]} $\exists b\ \forall x\ Q(f(b,y,x),g(h(a,x)))$\\
+  This formula is \textbf{not valid} since existential quantifiers cant be used with constant symbols.
+
+  \item \textbf{[5 points]} $\forall z\ \exists x\ P(g(h(b,x),z),f(a,y))$\\
+  This formula is \textbf{not valid} since the predicate symbol $P$ is used with only 2 arguments where as it  requires 3 arguments.
+
+  \item \textbf{[5 points]} $\forall y\ g(Q(z,y)) \implies P(h(f(y,z,z),z))$\\
+  This formula is \textbf{not valid}, since $g(Q(z,y))$ is a term not a formula. And $\phi_1 \implies \phi_2$ is a formula only when $\phi_1$ and $\phi_2$ are formulas.
+
+  \item \textbf{[5 points]}
+    $P(a,g(g(f(a,\neg b, a))),a) \implies P(a,f(a,\neg b, a),a)$\\
+    This formula is \textbf{not valid} since we are not allowed to use negation with a constant symbol ($\neg b$) which can be put as an argument.
+
+  \end{enumerate}
+
+\item \textbf{[25 points total]} Let $R$ be a predicate symbol with
+  arity 2, $f$ a function of arity 2, and let $\phi$ be the formula
+  \begin{displaymath}
+        \forall x\
+        [(R(x,z) \land  \exists z\ \neg R(z,f(x,y)))
+        \implies \forall y\ R(y,z)]
+  \end{displaymath}
+  \begin{enumerate}
+
+  \item \textbf{[5 points]} Indicate, for each occurrence of each
+    variable in $\phi$, whether that occurrence is free or bound.\\
+    The variables in $\phi$ include $x,y$ and $z$. The bold variables in $\phi$ are free. 
+    \begin{displaymath}
+        \forall x\
+        [(R(x,\textbf{z}) \land  \exists z\ \neg R(z,f(x,\textbf{y})))
+        \implies \forall y\ R(y,\textbf{z})]
+  \end{displaymath}
+    
+
+  \item \textbf{[5 points]} List all variables which occur both free
+    and bound in $\phi$.
+    
+    The variables in $\phi$ include $x,y$ and $z$. The bold variables in $\phi$ are free. Bounded occurrences are, x is bounded by $\forall x$ in $\phi$, z is bounded by $\exists z$ in $\neg R(z,f(x,\textbf{y}))$ and y is bounded by $ \forall y$ in $R(y,\textbf{z})$.
+    \begin{displaymath}
+        \forall x\
+        [(R(x,\textbf{z}) \land  \exists z\ \neg R(z,f(x,\textbf{y})))
+        \implies \forall y\ R(y,\textbf{z})]
+  \end{displaymath}
+
+  \item \textbf{[5 points]} Compute $\phi[t/x]$ for
+    $t = h(f(g(y),x),a,x)$.  Is $t$ free for $x$ in $\phi$?\\
+    $t$ is free for $x$ in $\phi$ as when you replace $t$ with $x$ there are no extra bindings to any other bound variables. Thus $\phi[t/x]$ will remain $\phi$.
+    \begin{displaymath}
+        \forall x\
+        [(\textbf{R(h(f(g(y),x),a,x)},z) \land  \exists z\ \neg R(z,f(\textbf{h(f(g(y),x),a,x)},y)))
+        \implies \forall y\ R(y,z)]
+  \end{displaymath}
+
+  \item \textbf{[5 points]} Compute $\phi[t/y]$ for
+    $t = h(f(g(y),x),a,x)$ Is $t$ free for $y$ in $\phi$?\\
+    $t$ is not free for $y$ in $\phi$ as when we replace $t$ for free
+    	instances of $y$ in $\phi$ we add additional bounding condition to the
+    	variable $x$ in $t$.
+
+  \item \textbf{[5 points]} Compute $\phi[t/z]$ for
+    $t = h(f(g(y),x),a,x)$ Is $t$ free for $z$ in $\phi$?\\
+    $t$ is not free for $z$ in $\phi$ as when we replace $t$ for free
+    	instances of $z$ in $\phi$ we add additional bounding condition to the
+    	variables $x$ and $y$ in $t$.
+
+  \end{enumerate}
+  
+\item \textbf{[50 points total]} Let $\phi_1$ and $\phi_2$ be the
+  sentences
+  \begin{eqnarray*}
+    \phi_1 
+    & =
+    & \forall x\ \forall y\ \forall z\
+      R(x,y) \land R(y,z) \implies R(x,z) 
+    \\
+    \phi_2
+    & = 
+    & \forall x\ \forall y\ \forall z\
+      R(x,y) \implies R(f(x,z),f(y,z))
+  \end{eqnarray*}
+  where $R$ is a predicate symbol of two arguments and $f$ is a
+  function symbol of two arguments.  Assume that $P$ and $f$ are the
+  only nonlogical symbols in the language.
+
+  \begin{itemize}
+
+  \item[(a)] \textbf{[15 points]:} Give a formal interpretation $I$ of
+    the language that makes $\phi_1$ true and $\phi_2$ false.\\
+    Lets consider domain of $x=\{1,2\}$, $y=\{4,5\}$ and $z=\{7\}$. $R(a,b)$: $a < b$ and $f(m,n)=n-m$
+
+  \item[(b)] \textbf{[5 points]:} Briefly explain why $I$ makes
+    $\phi_1$ true.\\
+    Based on the above formal interpretations we can see that all the different combinations of (x,y,z) which are (1,4,7), (1,5,7), (2,4,7) and (2,5,7) make  $\phi_1$ true. For example left hand side of implication is $R(x,y) \land R(y,z) = R(1,4) \land R(4,7) = T \land T = T$. Right Hand Side of implication also makes $R(x,z)=R(1,7) = T$. Similarly for all those sets $\phi_1$ is true
+
+  \item[(c)] \textbf{[5 points]:} Briefly explain why $I$ makes
+    $\phi_2$ false.\\
+    If we consider the set (x,y,z) = (1,4,7) then we can see that left hand side of implication, $R(1,4)$ is true and right hand side of implication, $R(f(1,7), f(4,7)$=$R(6, 3)$ which is a false statement and overall $\phi_2$ is false.
+
+  \item[(d)] \textbf{[15 points]:} Give the formal definition of an
+    interpretation $J$ that makes $\phi_1$ false and $\phi_2$ true.\\
+    M=\{1,2,3,4\}, $R(j,k)$: $j=2*k$ and $f(m,n)=m$ and will make $\phi_1$ false and $\phi_2$ true
+
+  \item[(e)] \textbf{[5 points]:} Briefly explain why $J$ makes
+    $\phi_1$ false.\\
+    Based on the above interpretations, we can see that for (x,y,z)=(4,2,1) $\phi_1$ is false because left hand side of implication is $R(x,y) \land R(y,z) = R(4,2) \land R(2,1)= T \land T = T$ and the right hand side, $R(x,z)=R(4,1)=F$ is false making the whole statement false.
+
+  \item[(f)] \textbf{[5 points]:} Briefly explain why $J$ makes
+    $\phi_2$ true.\\
+    For all different combinations of M=\{1,2,3,4\}, left hand side of implication is $R(x,y)$ and evaluating the right hand side of implication, $R(f(x,z),f(y,z))$ ultimately gets reduced to $R(x,y)$ which is same as left hand side. $\phi_2$ will always be true for this interpretation.
+
+  \end{itemize}
+
+\end{enumerate}
+\end{document}

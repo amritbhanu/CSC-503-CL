@@ -1,0 +1,141 @@
+\documentclass{article}
+\input{503macros.tex}
+
+\begin{document}
+\begin{center}
+  {\LARGE CSC 503 Homework Assignment 3}\\[1pc]
+  Out: August 30, 2016 \\
+  Due: September 6, 2016 \\
+  \unityid{aagrawa8}
+\end{center}
+
+\begin{enumerate}
+
+\item \textbf{[30 points]} Using the method described in lecture,
+  construct a formula $\phi$ in \textbf{DNF} to match the following
+  truth table.  Show and explain any intermediate steps.
+  \begin{center}
+    \begin{tabular}{ccc|c}
+      $p$ & $q$ & $r$ & $\phi$ \\ \hline
+      T & T & T & T\\
+      T & T & F & F\\
+      T & F & T & F\\
+      T & F & F & T\\
+      F & T & T & F\\
+      F & T & F & F\\
+      F & F & T & T\\
+      F & F & F & T
+    \end{tabular}
+  \end{center}
+  
+  \begin{answer}
+  	\begin{enumerate}
+  	  \item Rows with truth values '$T$' are $1, 4, 7, 8$.
+  	  \item The formula $\phi$ can be represented in DNF as $(Row1 \lor Row4 \lor
+  	  Row7 \lor Row8)$ which means that except for these there can be no other values of $T$.
+  	  \item Each Row can be represented by the corresponding values of the
+  	  literals. So the formula becomes $\phi : (p \land q \land r) \lor ( p
+  	  \land \neg q\land \neg r) \lor (\neg p \land \neg q \land r) \lor (\neg p \land \neg q \land \neg r) $
+	\end{enumerate}
+	
+	Thus the DNF for the given truth table is $(p \land q \land r) \lor ( p
+  	  \land \neg q\land \neg r) \lor (\neg p \land \neg q \land r) \lor (\neg p \land \neg q \land \neg r)$.
+  \end{answer}
+
+\item \textbf{[30 points]} Using the method described in lecture,
+  construct a formula $\phi$ in \textbf{CNF} to match the following
+  truth table.  Show and explain any intermediate steps.
+  \begin{center}
+    \begin{tabular}{ccc|c}
+      $p$ & $q$ & $r$ & $\phi$ \\ \hline
+      T & T & T & T\\
+      T & T & F & T\\
+      T & F & T & F\\
+      T & F & F & T\\
+      F & T & T & F\\
+      F & T & F & F\\
+      F & F & T & F\\
+      F & F & F & T
+    \end{tabular}
+  \end{center}
+   \begin{answer}
+  	\begin{enumerate}
+  		\item Rows with truth values $F$ are $3, 5, 6, 7$
+  		\item The formula $\phi$ can be represented in CNF as $(\neg Row3 \land
+  		\neg Row5 \land \neg Row6 \land \neg Row7)$ which means that except for the
+  		false value of the rows $3, 4, 6, 7$ others are $T$.
+  		\item Each Row can be represented by the corresponding values of the
+  		literals. So the formula becomes $\phi : (\neg (p \land \neg q \land r)
+  		\land \neg(\neg p \land q \land r) \land \neg(\neg p \land q \land
+  		\neg r) \land \neg(\neg p \land \neg q \land r))$
+  		\item Reducing the above formula using De'Morgans, we get $\phi: (\neg
+  		p \lor q \lor \neg r) \land ( p \lor \neg q \lor \neg r) \land (p \lor \neg q \lor r) \land (p \lor q \lor \neg r)$
+  	\end{enumerate}
+  	
+  	Thus the CNF for the given truth table is $ (\neg
+  		p \lor q \lor \neg r) \land ( p \lor \neg q \lor \neg r) \land (p \lor \neg q \lor r) \land (p \lor q \lor \neg r)$
+  	\end{answer}
+
+\item \textbf{[40 points]} Apply the following version of the
+  algorithm HORN from pages 66--67 of the textbook to the following
+  Horn formula $\varphi$.
+  \begin{enumerate}
+  \item Mark all occurrences of $\top$ in $\varphi$.
+  \item Marked w,v from $(\top \implies w)$, $(\top \implies v)$.
+  \begin{displaymath}
+    \varphi = 
+    \begin{array}{|lll}
+      1.  & (\top \implies \textbf{w})                  & \land \\
+      2.  & (w \implies q)                     & \land \\
+      3.  & (x \land t \implies \bot)          & \land \\
+      4.  & (q \land r \implies p)             & \land \\
+      5.  & (v \implies s)                     & \land \\
+      6.  & (w \implies r)                     & \land \\
+      7.  & (r \land s \implies x)             & \land \\
+      8.  & (\top \implies \textbf{v})                  & \land \\
+      9.  & (v \land q \implies u)             & \land \\
+      10. & (p \land r \land s \implies u)     & \land \\
+      11. & (u \implies v)                     &       \\
+    \end{array}
+  \end{displaymath}
+  \item Marked q,r,s from $(w \implies q)$, $(v \implies s)$, $(w \implies r)$.
+  \begin{displaymath}
+    \varphi = 
+    \begin{array}{|lll}
+      1.  & (\top \implies \textbf{w})                  & \land \\
+      2.  & (w \implies \textbf{q})                     & \land \\
+      3.  & (x \land t \implies \bot)          & \land \\
+      4.  & (q \land r \implies p)             & \land \\
+      5.  & (v \implies \textbf{s})                     & \land \\
+      6.  & (w \implies \textbf{r})                     & \land \\
+      7.  & (r \land s \implies x)             & \land \\
+      8.  & (\top \implies \textbf{v})                  & \land \\
+      9.  & (v \land q \implies u)             & \land \\
+      10. & (p \land r \land s \implies u)     & \land \\
+      11. & (u \implies v)                     &       \\
+    \end{array}
+  \end{displaymath}
+  \item Marked p,x,u from $(q \land r \implies p)$, $(r \land s \implies x)$, $(v \land q \implies u)$.
+  \begin{displaymath}
+    \varphi = 
+    \begin{array}{|lll}
+      1.  & (\top \implies \textbf{w})                  & \land \\
+      2.  & (w \implies \textbf{q})                     & \land \\
+      3.  & (x \land t \implies \bot)          & \land \\
+      4.  & (q \land r \implies \textbf{p})             & \land \\
+      5.  & (v \implies \textbf{s})                     & \land \\
+      6.  & (w \implies \textbf{r})                     & \land \\
+      7.  & (r \land s \implies \textbf{x})             & \land \\
+      8.  & (\top \implies \textbf{v})                  & \land \\
+      9.  & (v \land q \implies \textbf{u})             & \land \\
+      10. & (p \land r \land s \implies u)     & \land \\
+      11. & (u \implies v)                     &       \\
+    \end{array}
+  \end{displaymath}
+
+  \end{enumerate}
+  
+  The order of propositional letters marked is $w, v, q, r, p, x, u$. Since there is no conjunction to mark $t$, and hence $\bot$ is not marked. The $\varphi$ is Satisfiable using Horn Formula
+
+\end{enumerate}
+\end{document}

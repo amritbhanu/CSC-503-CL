@@ -1,0 +1,249 @@
+\documentclass{article}
+\input{503macros.tex}
+
+\begin{document}
+\begin{center}
+  {\LARGE CSC 503 Homework Assignment 8}\\
+  Out: October 20, 2016 \\
+  Due: October 27, 2016 \\
+  \unityid{aagrawa8}
+\end{center}
+
+
+Consider nested list structures of unrestricted lengths, with list
+elements consisting either of lists or the symbols $a$ and $b$,
+written in bracketed list form, such as $[a]$, $[a, b, a]$, and
+$[[b, b], [b, b]]$, using $[\ ]$ to denote the empty list.
+
+Consider further the following logic program $P$ that counts the
+number of occurrences of the symbol $a$ in such lists.
+\begin{displaymath}
+  P = \left\{
+    \begin{array}{ll}
+      1 & c([\ ],0). \\
+      2 & c(a,s(0)). \\
+      3 & c(b,0). \\
+      4 & c([l|r],p(n,m)) \leftarrow c(l,n), c(r,m). \\
+    \end{array}
+    \right.
+\end{displaymath}      
+Here $c$ is a predicate of two arguments, 0 is the number 0, $s(0)$
+denotes the successor of 0 (usually called 1), and $p$ is a function
+of two arguments denoting the sum (plus) function.  The notation
+$[l|r]$ indicates division of a list into the first list element $l$
+(which may itself be a list) and the list $r$ consisting of the
+sublist with the first element removed, so that matching
+$[[a,a], b, a]$ against $[l|r]$ requires that $l = [a,a]$ and
+$r = [b, a]$.  Matching $[a]$ against $[l|r]$ would require that
+$l = a$ and $r = [\ ]$.
+
+
+\begin{enumerate}
+
+\item[1.] \textbf{[30 points]} Starting with the initial goal clause
+  \begin{displaymath}
+    \begin{array}{ll}
+       \leftarrow c([[a], b],x_0). & \sigma_0 = \{  \}\\
+    \end{array}      
+  \end{displaymath}
+  use the counting program to derive the inferences appropriate to
+  Prolog's inference order (only match first subgoal, try program
+  clauses in order, maintaining subgoal orders).  First, at each step,
+  state the current subgoal list along with the substitutions used to
+  infer those subgoals.  Second, at the end, give the resulting value
+  for $x_0$ produced by the successive substitutions.
+
+  It will help keep things straight if you rename the variables in the
+  recursive program clause every time you apply the clause to a
+  subgoal literal.  That is, the  $k^{th}$ application of the recursive
+  clause to the literal $c([L|R],x)$ would involve a substitution of
+  the form $\sigma_k = \{ L/l, R/r, p(n_k,m_k)/x, n_k/n, m_k/m \}$.
+
+
+\begin{answer}
+
+    $\begin{array}{lll}$
+    5$ & \leftarrow c([[a], b],x_0). & \sigma_0 = \{  \}$\\
+    6 $& get \leftarrow c([a],n_0),c([b],m_0) $ Resolve 4 with 5. $& \sigma_1 = \{ [a]/l_1, [b]/r_1,p(n_0,m_0)/x_0 \}$\\
+    7 $& get \leftarrow c(a,n_1),c([\ ],m_1) $ Resolve 6 subgoal with 4. $& \sigma_2 = \{ a/l_{l1}, [\ ]/r_{l1},p(n_1,m_1)/n_0 \}$\\
+    8 $&get\ [\ ] $ Resolve 7 subgoal with 2. $& \sigma_3 = \{ s(0)/n_1 \}$\\
+    9 $& get\ [\ ] $ Resolve 7 other subgoal with 1. $& \sigma_4 = \{0/m_1 \}$\\
+    10 $& get \leftarrow c(b,n_2),c([\ ],m_2) $ Resolve 6 other subgoal with 4. $& \sigma_5 = \{ b/l_{r1}, [\ ]/r_{r1},p(n_2,m_2)/m_0 \}$\\
+    11 $&get\ [\ ] $ Resolve 10 subgoal with 3. $& \sigma_6 = \{ 0/n_2 \}$\\
+    12 $&get\ [\ ] $ Resolve 10 other subgoal with 1. $& \sigma_7 = \{ 0/m_2 \}$\\
+    13 $& $Cumulative substitution for $x_0$ is\\
+    & p(p(s(0),0),p(0,0))=s(0)=1\\
+    $\end{array} $ 
+   
+    \textit{Step7} is one sub goal getting inferred and the other subgoal is getting inferred from \textit{Step10}
+\end{answer}
+\end{enumerate}
+\noindent
+Now consider the program $P_4$ obtained from $P$ by switching the
+order of the literals in the body of line 4, that is, changing line 4
+to
+\begin{displaymath}
+    \begin{array}{ll}
+      4' & c([l|r],p(n,m)) \leftarrow c(r,m), c(l,n). \\
+    \end{array}
+\end{displaymath}      
+This change could conceivably change the sequence of subgoal lists
+from that obtained using $P$ on the stated initial goal, or the
+answers obtained, or the number of unification tests performed.
+
+\begin{enumerate}
+
+\item[2.] \textbf{[5 points]} Briefly explain the effects of the
+  change from $P$ to $P_4$, if any, when started on the same goal
+  clause as in Problem 1.
+\begin{answer}
+The final answer will stay as p(p(s(0),0),p(0,0))=s(0)=1.\\Only the order of Prologs inference steps will change. That is firstly the Right sub goal is inferred and then the left sub goal is inferred. For elaborate steps, please look into the below steps.\\
+$\begin{array}{lll}$
+    5$ & \leftarrow c([[a], b],x_0). & \sigma_0 = \{  \}$\\
+    6 $& get \leftarrow c([b],m_0),c([a],n_0) $ Resolve 5 with 4. $& \sigma_1 = \{ [a]/l_1, [b]/r_1,p(n_0,m_0)/x_0 \}$\\
+    7 $& get \leftarrow c([\ ],m_1),c(b,n_1)  $ Resolve 6 subgoal with 4. $& \sigma_2 = \{ b/l_{r1}, [\ ]/r_{r1},p(n_1,m_1)/m_0 \}$ \\
+    8 $&get\ [\ ] $ Resolve 7 subgoal with 1. $& \sigma_3 = \{ 0/m_1 \}$\\
+    9 $& get\ [\ ] $ Resolve 7 other subgoal with 3. $& \sigma_4 = \{0/n_1 \}$\\
+    10 $& get \leftarrow c([\ ],m_1),c(a,n_1) $ Resolve 6 other subgoal with 4. $& \sigma_5 = \{ a/l_{l1}, [\ ]/r_{l1},p(n_2,m_2)/n_0 \}$\\
+    11 $&get\ [\ ] $ Resolve 10 subgoal with 1. $& \sigma_6 = \{ 0/m_2 \}$\\
+    12 $&get\ [\ ] $ Resolve 10 other subgoal with 2. $& \sigma_7 = \{ S(0)/n_2 \}$\\
+    13 $& $Cumulative substitution for $x_0$ is\\
+    & p(p(s(0),0),p(0,0))=s(0)=1\\
+    $\end{array} $ 
+\end{answer}
+\end{enumerate}
+
+\noindent
+Now consider the clauses
+\begin{displaymath}
+  \begin{array}{ll}
+    A & c([a],s(0)). \\
+    B & c([b],n) \leftarrow c([],n). \\
+    C & c([[a]|r],p(s(0),m)) \leftarrow c(r,m). \\
+  \end{array}      
+\end{displaymath}      
+and the possible effects of changes to $P$ on the sequence of subgoal
+lists, answers obtained, or number of unification attempts.
+
+\begin{enumerate}
+
+\item[3.] \textbf{[10 points]} Form $P_A$ by inserting clause $A$
+  between lines 3 and 4 of $P$.  Briefly explain the effects of this
+  change, if any, when started on the same goal clause as in Problem
+  1.
+\begin{answer}
+    There will be change in the left sub goal as it will not goto another subgoal routine. It will return back from Step 7 itself.\\\\
+    $\begin{array}{lll}$
+    5$ & \leftarrow c([[a], b],x_0). & \sigma_0 = \{  \}$\\
+    6 $& get \leftarrow c([a],n_0),c([b],m_0) $ Resolve 5 with 4. $& \sigma_1 = \{ [a]/l_1, [b]/r_1,p(n_0,m_0)/x_0 \}$\\
+    7 $&get\ [\ ] $ Resolve 6 subgoal with A clause. $& \sigma_2 = \{ s(0)/n_0 \}$\\
+    8 $& get \leftarrow c(b,n_2),c([\ ],m_2) $ Resolve 6 other subgoal with 4. $& \sigma_3 = \{ b/l_{r1}, [\ ]/r_{r1},p(n_1,m_1)/m_0 \}$\\
+    9 $&get\ [\ ] $ Resolve 8 subgoal with 3. $& \sigma_4 = \{ 0/n_2 \}$\\
+    10 $&get\ [\ ] $ Resolve 8 other subgoal with 1. $& \sigma_5 = \{ 0/m_2 \}$\\
+    11 $& $Cumulative substitution for $x_0$ is\\
+    & p(s(0),p(0,0))=s(0)=1\\
+    $\end{array} $ 
+   
+    \textit{Step7} is one sub goal getting inferred and the other subgoal is getting inferred from \textit{Step10}
+\end{answer}
+\item[4.] \textbf{[5 points]} Would the answer to Problem 3 be the
+  same if $P_A$ instead inserted $A$ anywhere else before line 4?
+  Briefly explain.
+\begin{answer}
+It will stay the same answer p(s(0),p(0,0))=s(0)=1 if you insert Clause A anywhere before 4. Because Prolog starts finding the clause similarity from top to bottom. And it will find Clause A before reaching step 4.
+\end{answer}
+\item[5.] \textbf{[5 points]} Would the answer to Problem 3 be the
+  same if $P_A$ instead inserted $A$ after line 4?
+  Briefly explain.
+\begin{answer}
+It will change the answer back to p(p(s(0),0),p(0,0))=s(0)=1 if you insert Clause A after 4. Because Prolog starts finding the clause similarity from top to bottom. And it will not find the matching clause at statement 5 before that it will run statement 4 and divide and will go into other subroutines.
+\end{answer}
+\item[6.] \textbf{[10 points]} Form $P_B$ by inserting clause $B$
+  between lines 3 and 4 of $P$.  Briefly explain the effects of this
+  change, if any, when started on the same goal clause as in Problem
+  1.
+  \begin{answer}
+  It will change the inference for right sub goal which is shown below at step 10. The cumulative substituion will be different.\\
+   $\begin{array}{lll}$
+    5$ & \leftarrow c([[a], b],x_0). & \sigma_0 = \{  \}$\\
+    6 $& get \leftarrow c([a],n_0),c([b],m_0) $ Resolve 5 with 4. $& \sigma_1 = \{ [a]/l_1, [b]/r_1,p(n_0,m_0)/x_0 \}$\\
+    7 $& get \leftarrow c(a,n_1),c([\ ],m_1) $ Resolve 6 subgoal with 4. $& \sigma_2 = \{ a/l_{l1}, [\ ]/r_{l1},p(n_1,m_1)/n_0 \}$\\
+    8 $&get\ [\ ] $ Resolve 7 subgoal with 2. $& \sigma_3 = \{ s(0)/n_1 \}$\\
+    9 $& get\ [\ ] $ Resolve 7 other subgoal with 1. $& \sigma_4 = \{0/m_1 \}$\\
+    10 $& get \leftarrow c([\ ],m_2) $ Resolve 6 other subgoal with clause B. $& \sigma_5 = \{ m_2/m_0 \}$\\
+    11 $&get\ [\ ] $ Resolve 10 with 1. $& \sigma_6 = \{ 0/m_2 \}$\\
+    12 $& $Cumulative substitution for $x_0$ is\\
+    & p(p(s(0),0),0)=s(0)=1\\
+    $\end{array} $ 
+\end{answer}
+\item[7.] \textbf{[10 points]} Form $P_C$ by inserting clause $C$
+  between lines 3 and 4 of $P$.  Briefly explain the effects of this
+  change, if any, when started on the same goal clause as in Problem
+  1.
+  \begin{answer}
+    It will change the inference and will give us only 1 subgoal which is shown below at step 6. The cumulative substituion will be different.\\
+    $\begin{array}{lll}$
+    5$ & \leftarrow c([[a], b],x_0). & \sigma_0 = \{  \}$\\
+    6 $& get \leftarrow c([b],m_0) $ Resolve 5 with clause C. $& \sigma_1 = \{ [b]/r_1,p(s(0),m_0)/x_0 \}$\\
+    7 $& get \leftarrow c(b,n_2),c([\ ],m_2) $ Resolve 6 with 4. $& \sigma_2 = \{ b/l_{r1}, [\ ]/r_{r1},p(n_1,m_1)/m_0 \}$\\
+    11 $&get\ [\ ] $ Resolve 10 subgoal with 3. $& \sigma_3 = \{ 0/n_1 \}$\\
+    12 $&get\ [\ ] $ Resolve 10 other subgoal with 1. $& \sigma_4 = \{ 0/m_1 \}$\\
+    13 $& $Cumulative substitution for $x_0$ is\\
+    & p(s(0),p(0,0))=s(0)=1\\
+    $\end{array} $ 
+   
+\end{answer}
+\end{enumerate}
+
+
+%\newpage
+
+Consider the logical database
+\begin{displaymath}
+  \hbox{DB} = \left\{
+    \begin{array}[c]{l}
+      \forall x\ UndergradStudent(x) \implies CollegeStudent(x) \\
+      \forall x\ GradStudent(x) \implies CollegeStudent(x) \\
+      \forall x\ CollegeStudent(x) \implies Student(x) \\
+      UndergradStudent(Alice) \\
+      GradStudent(Bob) \\
+      GradStudent(Carol)
+    \end{array}
+  \right.
+\end{displaymath}
+The first three statements are the general facts.  The remaining three
+atomic statements are the specific facts.
+
+
+\begin{enumerate}
+
+\item[8.] {\textbf{[5 points]}} List the atomic facts that would be added
+  to DB by applying the unique names assumption.
+  \begin{answer}
+Alice \neq Bob\\
+Alice \neq Carol\\
+Carol \neq Bob
+  \end{answer}
+
+\item[9.] {\textbf{[5 points]}} Provide a domain closure axiom that
+  restricts the objects in the domain to those named by the symbols
+  $Alice$, $Bob$, $Carol$ and $Dave$.
+\begin{answer}
+\forall x ( x=Alice \lor x= Bob \lor x=Carol \lor x=Dave)
+\end{answer}
+\item[10.] {\textbf{[10 points]}} List the atomic facts, if any, that
+  would be added to DB by the closed world assumption CWA(DB).
+  Briefly explain your answer.
+\begin{answer}
+This DB contains predicates namely UndergradSTudent, GradStudent, CollegeStudent and Student. CWA adds the negation of the atomic sentences of these predicates that are not entailed by this DB. This DB will also entail, CollegeStudent(Alice), Student(Alice), CollegeStudent(Bob), Student(Bob), CollegeStudent(Carol), Student(Carol). But DB doesn't entail GradStudent(Alice), UndergradStudent(Bob), and UndergradStudent(Carol). So CWA(DB) will add\\
+\neg GradStudent(Alice)\\
+\neg UndergradStudent(Bob)\\
+\neg UndergradStudent(Carol)
+\end{answer}
+\item[11.] {\textbf{[5 points]}} Is CWA(DB) consistent?
+\begin{answer}
+Yes it is consistent
+\end{answer}
+\end{enumerate}
+
+\end{document}

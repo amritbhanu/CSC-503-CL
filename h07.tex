@@ -1,0 +1,260 @@
+\documentclass{article}
+\input{503macros.tex}
+
+\begin{document}
+\begin{center}
+  {\LARGE CSC 503 Homework Assignment 7}\\
+  Out: October 17, 2016 \\
+  Due: October 25, 2016 \\
+  \unityid{aagrawa8}
+\end{center}
+
+
+The first two problems refer to the substitutions
+\begin{eqnarray*}
+  \theta &=& \{ u/v, f(a)/w, g(f(x))/y \} \\
+  \sigma &=& \{ v/w, a/u, g(y)/y, b/x \}.
+\end{eqnarray*}
+
+\begin{enumerate}
+
+\item[1.] \textbf{[15 points]} Compute the product substitution
+  $\theta\sigma$, showing how you obtained the result.
+  \begin{answer}
+  \begin{eqnarray*}
+  \theta\sigma &=& \{ u\sigma/v, f(a)\sigma/w, g(f(x))\sigma/y, v/w, a/u, g(y)/y, b/x\} \\
+  &=& \{ a/v, f(a)\sigma/w, g(f(x))\sigma/y, v/w, a/u, g(y)/y, b/x\}\\
+  &=& \{ a/v, f(a)/w, g(f(x))\sigma/y, a/u, g(y)/y, b/x\}\\
+  &=& \{ a/v, f(a)/w, g(f(b))/y, a/u, b/x\}
+\end{eqnarray*}
+  \end{answer}
+
+\item[2.] \textbf{[15 points]} Compute the product substitution
+  $\sigma\theta$.
+  \begin{answer}
+  \begin{eqnarray*}
+  \sigma\theta &=& \{  v\theta/w, a\theta/u, g(y)\theta/y, b\theta/x, u/v, f(a)/w, g(f(x))/y\} \\
+&=& \{  u/w, a\theta/u, g(y)\theta/y, b\theta/x, u/v, g(f(x))/y\}\\
+&=& \{  u/w, a/u, g(y)\theta/y, b\theta/x, u/v, g(f(x))/y\}\\
+&=& \{  u/w, a/u, g(g(f(x)))/y, b\theta/x, u/v\}\\
+&=& \{  u/w, a/u, g(g(f(x)))/y, b/x, u/v\}
+\end{eqnarray*}
+  \end{answer}
+
+\end{enumerate}
+
+
+For your reference, the algorithm to calculate the most general
+unifier $\sigma$ of a set $S$ of predicate expressions consists of the
+following steps.
+\begin{itemize}
+
+\item Step 0:
+  \begin{enumerate}
+  \item Let $S_0 = S$
+  \item Let $\sigma_0 = \epsilon$
+  \end{enumerate}
+
+\item Step $k+1$:
+  \begin{enumerate}
+  \item If $S_k$ has exactly one element, return the product
+    substitution $\sigma_0\cdots\sigma_k$ as the value of $\sigma$
+  \item If the disagreement set $D(S_k)$ contains both a variable
+    $v$ and a term $t$ in which $v$ \emph{does not occur}, then
+    \begin{enumerate}
+    \item Choose least such pair (alphabetical order by variable, then
+      by term)
+    \item Let $\sigma_{k+1} = \{ t/v \}$
+    \item Let $S_{k+1} = S_k \sigma_{k+1}$
+    \item Proceed to step $k+2$
+    \end{enumerate}
+  \item Otherwise, announce that $S$ has no unifier
+  \end{enumerate}
+\end{itemize}
+
+In the following two problems, apply the unification algorithm to each
+of the following sets, assuming that $a$ is a constant symbol, $f$ is
+a function symbol, $P$ is a predicate symbol, and $x,y,z$ are variable
+symbols.  For each set, at each step $k$, show (1) the disagreement
+set $D(S_k)$ of $S_k$, (2) the substitution $\sigma_k$ if there is
+one, or an explanation why there is no unifying substitution, and (3)
+the result $S_{k+1}$ of applying $\sigma_k$ to $S_k$.  If the set
+unifies, show also (4) the overall substitution
+$\sigma_0 \dots \sigma_k$ expressed as a single substitution (that is,
+compute the product of the stepwise substitutions).
+
+\begin{enumerate}
+
+\item[3.] \textbf{[15 points]}
+  $S = \{ P(x,y,z), P(a,f(x,z),f(x,y)) \}$
+\begin{answer}
+        Initializing $\sigma_0$ to $\{\}$
+		
+		$S_0 = \{ P(x,y,z), P(a,f(x,z),f(x,y)) \}$
+		
+		$D(S_0) = \{x, a\}$
+		\bigskip
+		
+		$\sigma_1 = \{a/x\}$
+		
+		$S_1 = \{ P(a,y,z), P(a,f(a,z),f(a,y)) \}$
+		
+		$D(S_1) = \{y, f(a,z)\}$
+		\bigskip
+		
+		$\sigma_2 = \{f(a,z)/y\}$
+		
+		$S_2 = \{ P(a,f(a,z),z), P(a,f(a,z),f(a,f(a,z))) \}$
+		
+		$D(S_2) = \{z, f(a,f(a,z))\}$
+		Unification is not possible as now there is no substitution for z as it is a bound variable.
+\end{answer}
+
+\item[4.] \textbf{[15 points]}
+  $S = \{ P(f(a),y), P(x,a) \}$
+  \begin{answer}
+        Initializing $\sigma_0$ to $\{\}$
+		
+		$S_0 = \{ P(f(a),y), P(x,a) \}$
+		
+		$D(S_0) = \{f(a), x\}$
+		\bigskip
+		
+		$\sigma_1 = \{f(a)/x\}$
+		
+		$S_1 = \{ P(f(a),y), P(f(a),a) \}$
+		
+		$D(S_1) = \{y, a\}$
+		\bigskip
+		
+		$\sigma_2 = \{a/y\}$
+		
+		$S_2 = \{ P(f(a),a), P(f(a),a) \}$
+		
+		$|S_2| = 1$		
+		\bigskip
+		
+		$\sigma = \sigma_0 \cdot{} \sigma_1 \cdot{} \sigma_2$
+		
+		$\sigma = \{\} \cdot{} \{f(a)/x\} \cdot{} \{a/y\}$
+		
+		$\sigma = \{f(a)/x\} \cdot{} \{a/y\}$
+		
+		$\sigma = \{f(a)/x, a/y\}$
+		
+		Unification is feasible for above $\sigma$.
+\end{answer}
+\end{enumerate}
+
+
+% \vfill
+% \begin{center}
+%   (Assignment continued next page)
+% \end{center}
+
+\newpage
+
+The following is an example of a propositional resolution refutation
+proof of $Q$ from premises $P$ and $P \implies Q$, with the proof
+written in linear form.
+\begin{center}
+  \begin{tabular}{lll}
+    Line & Clause & Justification \\ \hline
+    1. & $\{ P \}$ & Given \\
+    2. & $\{ \neg P, Q \}$ & Given \\ \hline
+    3. & $\{ \neg Q \}$ & Refutation clause, negation of goal $Q$ \\
+    4. & $\{ \neg P \}$ & Resolving (2) with (3) on $Q$  \\
+    5. & $\{ \}$ & Resolving (4) with (1) on $P$  \\ 
+  \end{tabular}
+\end{center}
+If the negation of the goal had consisted of several clauses, each of
+those would have been listed on a separate line as a refutation clause
+(as is done for the single clause on line 3).  The order in which
+lines are mentioned in lines 4 and 5 does not matter.
+
+The following is an example of a predicate resolution refutation proof
+of $Q(a)$ from premises $P(a)$ and $\forall x\ [P(x) \implies Q(x)]$,
+again with the proof written in linear form.
+\begin{center}
+  \begin{tabular}{llll}
+    Line & Clause & Justification & Unifier \\ \hline
+    1. & $\{ P(a) \}$ & Given & \\
+    2. & $\{ \neg P(x_2), Q(x_2) \}$ & Given & \\ \hline
+    3. & $\{ \neg Q(a) \}$ & Refutation clause, negation of goal
+                             $Q(a)$ & \\
+    4. & $\{ \neg P(a) \}$ & Resolving (2) with (3) on $Q$ & $\{ a/x_2
+                                                             \}$ \\
+    5. & $\{ \}$ & Resolving (4) with (1) on $P$ & $\{ \}$  \\ 
+  \end{tabular}
+\end{center}
+Here the variables in line 2 have been standardized apart, which was
+not really necessary for this proof as line 2 represents the only
+given involving variables.  If the resolution steps in lines 4 and 5
+had involved multiple literals in one of the clauses, the
+justification would have needed to indicate the specific literals
+involved.
+
+In the following two problems concerning resolution proofs, write the
+proofs in either linear or tree form.
+
+\begin{enumerate}
+    
+\item[5.] \textbf{[20 points]} Let $P,Q,R,S$ be atomic propositional
+  symbols, and give a resolution refutation proof of $\neg R$ in
+  either tree or linear form from the following clauses.
+  \begin{answer}
+          
+  
+  \begin{center}
+    \begin{tabular}{lll}
+      Line & Clause & Justification \\ \hline
+      1. & $\{ P, Q, \neg R \}$ & Given \\
+      2. & $\{ \neg P, S \}$ & Given \\
+      3. & $\{ \neg S \}$ & Given \\
+      4. & $\{ \neg Q \}$ & Given \\ \hline
+      5. & $\{ R \}$ & Refutation clause, negation of goal. \\
+      6. & $\{ P, Q \}$ & Resolving (1) with (5) on $R$. \\
+      7. & $\{ P \}$ & Resolving (6) with (4) on $Q$.\\
+      8. & $\{ \neg P \}$ & Resolving (2) with (3) on $S$ \\
+      9. & $\{ \}$ & Resolving (7) with (8) on $P$. 
+    \end{tabular}
+  \end{center}
+  We proved $\neg R$ by deriving empty clause by giving a resolution refutation of the goal.
+\end{answer}
+  
+\item[6.] \textbf{[20 points]} Let $a$ be a constant symbol, $f$ be a
+  function symbol, $P$ a ternary predicate symbol, and $x,y,z$ be
+  variables.  Rewrite the following three clauses with the variables
+  standardized apart and then give a resolution refutation of the set
+  of the three rewritten clauses.  At each step of the refutation,
+  indicate the literals being resolved together and the most general
+  unifying substitution used in the proof.  If there is only one
+  possible choice of complementary literals, you need indicate only
+  the predicate symbol being resolved on, not the arguments of the
+  literals.
+  
+  \begin{center}
+    \begin{tabular}{llll}
+      Line & Clause & Justification & Substitution \\ \hline
+      1. & $\{ P(a,x,x) \}$ & Given & \\
+      2. & $\{ \neg P(x,y,z), P(f(f(x)),y,f(z)) \}$ & Given & \\
+      3. & $\{ \neg P(f(f(a)),a,f(a)) \}$ & Given & \\ \hline
+    \end{tabular}
+  \end{center}
+  
+  \begin{answer}
+    \begin{center}
+    \begin{tabular}{llll}
+      Line & Clause & Justification & Substitution \\ \hline
+      1. & $\{ P(a,x_1,x_1) \}$ & Given & \\
+      2. & $\{ \neg P(x_2,y_2,z_2), P(f(f(x_2)),y_2,f(z_2)) \}$ & Given & \\
+      3. & $\{ \neg P(f(f(a)),a,f(a)) \}$ & Given & \\ \hline
+      4. & $\{P(f(f(a)),a,f(a))\}$ & Resolving (2) with (1)  & $\{a/x_1,a/x_2,a/y_2,a/z_2\}$\\
+      5. & $\{\}$ & Resolving (4) with (3) & $\{\}$
+    \end{tabular}
+  \end{center}
+  \end{answer}
+
+\end{enumerate}
+
+\end{document}

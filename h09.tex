@@ -1,0 +1,193 @@
+\documentclass{article}
+\input{503macros.tex}
+
+\begin{document}
+\begin{center}
+  {\LARGE CSC 503 Homework Assignment 9}\\[1pc]
+  Out: October 27, 2016 \\
+  Due: November 3, 2016 \\
+  \unityid{aagrawa8}
+\end{center}
+
+\begin{enumerate}
+\item \textbf{[20 points]} List all subformulas of the LTL
+  formula, using the textbook binding priority conventions.
+  \begin{displaymath}
+    \NextX (q \Until (\neg \NextX p \implies r)) \WeakUntil 
+    (\NextX \Sometime s \lor \Forever \NextX (r \Until \neg q))
+  \end{displaymath}
+  \begin{answer}
+  \begin{itemize}
+    \item $\NextX (q \Until (\neg \NextX p \implies r)) \WeakUntil 
+    (\NextX \Sometime s \lor \Forever \NextX (r \Until \neg q))$
+    \item $\NextX (q \Until (\neg \NextX p \implies r))$
+    \item $q \Until (\neg \NextX p \implies r)$
+    \item q
+    \item $\neg \NextX p \implies r$
+    \item $\NextX p$
+    \item $\neg \NextX p$
+    \item $p$
+    \item $r$
+    \item $\NextX \Sometime s \lor \Forever \NextX (r \Until \neg q)$
+    \item $\NextX \Sometime s$
+    \item $\Sometime s$
+    \item $\Forever \NextX (r \Until \neg q)$
+    \item $\NextX (r \Until \neg q)$
+    \item $r \Until \neg q$ 
+    \item $\neg q$
+
+
+    \end{itemize}
+  \end{answer}
+  
+
+The textbook states the satisfaction conditions for LTL statements are
+as follows (Definition 3.6).
+\begin{itemize}
+\item $\pi \models \top$
+\item $\pi \not\models \bot$
+\item $\pi \models p$ iff $p \in L(s_1)$
+  \begin{itemize}
+  \item Regard $s_1$ as ``now'', the ``current state''
+  \item Regard $\pi^2$ as its future
+  \end{itemize}
+\item $\pi \models \neg \phi$ iff $\pi \not\models \phi$
+\item $\pi \models \phi \land \psi$ iff $\pi \models \phi$ and
+  $\pi \models \psi$
+\item $\pi \models \phi \lor \psi$ iff $\pi \models \phi$ or
+  $\pi \models \psi$
+\item $\pi \models \phi \implies \psi$ iff $\pi \models \psi$ whenever
+  $\pi \models \phi$
+\item $\pi \models \NextX \phi$ iff $\pi^2 \models \phi$
+\item $\pi \models \Forever \phi$ iff $\pi^i \models \phi$ for all
+  $i \ge 1$
+\item $\pi \models \Sometime \phi$ iff $\pi^i \models \phi$ for some
+  $i \ge 1$
+\item $\pi \models \phi \Until \psi$ iff \\
+  \qquad
+  $\pi^i \models \psi$ for some $i \ge 1$ and $\pi^j \models
+  \phi$ for all $1 \le j < i$
+\item $\pi \models \phi \WeakUntil \psi$ iff either $\pi^k \models
+  \phi$ for all $k \ge 1$; or \\
+  \qquad
+  $\pi^i \models \psi$ for some $i \ge 1$ and $\pi^j \models \phi$
+  for all $1 \le j < i$
+\item $\pi \models \phi \Release \psi$ iff either $\pi^k \models
+  \phi$ for all $k \ge 1$; or \\
+  \qquad
+  $\pi^i \models \phi$ for some $i \ge 1$ and $\pi^j \models \psi$
+  for all $1 \le j < i$
+\end{itemize}
+
+\item \textbf{[20 points]} Using these definitions, demonstrate
+  that if $\pi \models \phi \WeakUntil \psi$, then
+  $\pi \models (\phi \Until \psi) \lor \Forever \phi$.
+
+\begin{answer}
+ $\begin{array}{lll}$
+1.$&$ $\pi \models \phi \WeakUntil \psi$ $&$Given\\
+2. $&$ iff either $\pi^k \models \phi$ for all $k \ge 1$; or $&$ From the definition\\ 
+3. $&$ 
+  $\pi^i \models \psi$ for some $i \ge 1$ and $\pi^j \models \phi$
+  for all $1 \le j < i$ $&$ From the definition\\
+4. $&$ \item $\pi \models \Forever \phi$ $&$ Substituting i for k in 2 and from the definition of $\pi \models \Forever \phi$ \\
+5. $&$ $\pi \models \phi \Until \psi$ $&$ From the definition of $\pi \models \phi \Until \psi$\\
+6. $&$ $\pi \models (\phi \Until \psi) \lor \Forever \phi$ $&$ From the definition of $\pi \models \phi \lor \psi$ using on 5 and 4 \\
+$\end{array} $ 
+\end{answer}
+
+\noindent
+Answer the following questions concerning the truth of statements
+about the following transition model $M$.
+\begin{center}
+  \begin{tikzpicture}[>=stealth',shorten >=1pt,auto,node
+    distance=3cm]
+    \node[state,label=-135:$s_1$] (s1) {$a b$};
+    \node[state,label=-45:$s_2$] (s2) [right of=s1] {};
+    \node[state,label=-135:$s_3$] (s3) [below of=s1] {$a$};
+    \node[state,label=-45:$s_4$] (s4) [below of=s2] {$b$};
+    \path[->] 
+    (s1) edge  [loop left] node {} (s1)
+    (s1) edge              node {} (s3)
+    (s1) edge  [bend left] node {} (s2)
+    (s2) edge  [bend left] node {} (s4)
+    (s2) edge  [bend left] node {} (s1)
+    (s3) edge  [loop left] node {} (s3)
+    (s4) edge  [bend left] node {} (s2);
+  \end{tikzpicture}
+  \\
+  {Model $M$}
+\end{center}
+Recall that all paths are infinite.  To indicate a path that ends with
+a repeated set of states, put parenthesis around the repeated
+subsequence (e.g., $(s_1, s_2)^\infty$.  To indicate a path in which
+the initial subsequence $s_1, s_2$ is followed by any possible
+continuing path, write ``$s_1, s_2,$ (any)''.
+
+
+\item \textbf{[5 points]} Identify a path starting in state $s_1$
+  that satisfies $\Forever a$ and explain why it does.
+    \begin{answer}
+     $\pi = (s_1, (s_3)^\infty)$ \\
+     Since $s_3$ has a loop to itself, this path will forever be true containing literal a.
+    \end{answer}
+\item \textbf{[5 points]} Determine whether
+  $M, s_1 \models \Forever a$ and explain why or why not.
+ \begin{answer}
+  No it wont be true for this path $\pi =  (s_1, (s_2 \implies s_4)^\infty)$ This path will not have literal a forever as it will keep looping back and forth between $s_2$ and $s_4$.
+ \end{answer}
+\item \textbf{[10 points]} Is there a state
+  $s \in \{ s_1, s_2, s_3, s_4 \}$ such that
+  $M, s \models \Forever a$?  If so, identify one; if not, explain why
+  not.
+ \begin{answer}
+  $s_3$ is the state where $M, s \models \Forever a$. Since $s_3$ has only 1 transition to take, the path taken in future will always have literal a.
+ \end{answer}
+\item \textbf{[5 points]} Identify a path starting in state $s_1$
+  that satisfies $b \Until a$ and explain why it does.
+ \begin{answer}
+  The path $\pi =  (s_1)^\infty $ will satisfy  $b \Until a$. Since it will always start from $s_1$ we will always have literal a.
+ \end{answer}
+\item \textbf{[5 points]} Determine whether $M, s_1 \models
+  b \Until a$ and explain why or why not.
+ \begin{answer}
+  Yes this Model does. Since all path will start from $s_1$ which does contain literal a and we dont have to check further according to the definition of $\Until$.
+ \end{answer}
+\item \textbf{[5 points]} Identify a path starting in state $s_1$
+  that satisfies $b \Until \Sometime \neg b$ and explain why it does.
+ \begin{answer}
+  The path $\pi =  (s_1 , (s_3)^\infty)$ will satisfy  $b \Until \Sometime \neg b$. Since at $s_1$ we have literal b and sometime in future it will not have literal b when it reaches $s_3$. And it will stay in $s_3$.
+ \end{answer}
+\item \textbf{[5 points]} Determine whether
+  $M, s_1 \models b \Until \Sometime \neg b$ and explain why or why
+  not.
+ \begin{answer}
+ No, M will not be true always. Consider the path $\pi =  (s_1,(s_2,s_4)^\infty)$. We will have literal b in next state and then sometime in future at $s_4$ it encountered literal b.
+ \end{answer}
+\item \textbf{[5 points]} Identify a path starting in state $s_1$ that
+  satisfies $\NextX a \Until \NextX (\neg a \land \neg b)$ and explain
+  why it does.
+ \begin{answer}
+  The path $\pi =  (s_1,s_1, s_2, (any))$  will satisfy  $\NextX a \Until \NextX (\neg a \land \neg b)$. At $s_1$ we have literal a until the next state transit to $s_2$ which is empty making $\neg a \land \neg b$ true and we dont have to check further according to the definition of $\Until$.
+ \end{answer}
+\item \textbf{[5 points]} Determine whether
+  $M, s_1 \models \NextX a \Until \NextX (\neg a \land \neg
+  b)$ and explain why or why not.
+ \begin{answer}
+  No it will not. Lets consider a path $\pi =  (s_1, s_1)^\infty$. In the next state $s_1$ it will make  $\neg a \land \neg b$ false since it contains both literals a and b.
+ \end{answer}
+\item \textbf{[5 points]} Identify a path starting in state $s_1$ that
+  satisfies $\NextX (\neg a \Until (b \Until \Forever \neg a))$ and
+  explain why it does.
+ \begin{answer}
+ The path $\pi = ( s_1, s_2, s_1, (s_3)^\infty)$ will satisfy $\NextX (\neg a \Until (b \Until \Forever \neg a))$. The next state of $s_2$ is true since it doesn't contain a, until you come back to state $s_1$ where b is true until you go to $s_3$ where it is always true since b is not in $s_3$.
+ \end{answer}
+\item \textbf{[5 points]} Determine whether
+  $M, s_1 \models \NextX (\neg a \Until (b \Until \Forever \neg b))$
+  and explain why or why not.
+ \begin{answer}
+  This is not true for a path $\pi =  (s_1)^\infty$ as it has encountered a in the next state itself.
+ \end{answer}
+\end{enumerate}
+
+\end{document}

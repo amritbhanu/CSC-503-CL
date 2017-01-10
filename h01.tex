@@ -1,0 +1,184 @@
+\documentclass{article}
+\input{503macros.tex}
+
+\begin{document}
+\begin{center}
+  {\LARGE CSC 503 Homework Assignment 1}\\[1pc]
+  Out: August 23, 2016 \\
+  Due: August 30, 2016 \\
+  \unityid{aagrawa8}
+\end{center}
+
+\begin{enumerate}
+
+\item \textbf{[10 points total]} The formulas of propositional logic
+  implicitly assume the binding priorities of the logical connectives
+  put forward in Convention 1.3.  Make sure that you fully understand
+  those conventions by reinserting all omitted parentheses in the
+  following abbreviated statements.
+
+  \begin{enumerate}
+  \item \textbf{[5 points]}
+    $p \implies q \lor \neg r \implies \neg \neg q \implies p \lor r$
+    \\Ans $p \implies ( (q \lor \neg r) \implies ((\neg \neg q) \implies (p \lor r) ) )$
+
+  \item \textbf{[5 points]}
+    $r \lor p \implies \neg \neg q \implies \neg r \lor (q \implies p)$
+    \\Ans  $(r \lor p) \implies ( (\neg \neg q) \implies (\neg r \lor (q \implies p) ) )$
+  \end{enumerate}
+
+\item \textbf{[10 points]} Why is the expression $p \land q \lor r$
+  problematic?  Use truth tables or interpretations to justify your
+  answer.
+  
+  \begin{table}[!htbp]
+\renewcommand\arraystretch{0.8}
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
+\hline
+\begin{tabular}[c]{@{}c@{}}\textbf{p}\end{tabular} & \begin{tabular}[c]{@{}c@{}}\textbf{q}\end{tabular}     & \multicolumn{1}{l|}{\textbf{r}} & \multicolumn{1}{l|}{\textbf{ $p \land q \lor r$}} \\ \hline
+F & F  & F & F  \\ \hline
+F & F  & T & ?  \\ \hline
+F & T  & F & F  \\ \hline
+F & T  & T & ?  \\ \hline
+T & F  & F & F  \\ \hline
+T & F  & T & T \\ \hline
+T & T  & F & T  \\ \hline
+T & T  & T & T  \\ \hline
+\end{tabular}
+\end{center}
+\caption{Truth Table}
+\label{tab:truth1}
+\end{table}
+
+From Table \ref{tab:truth1}, we can see that row 3 and row 5 is marked with ?. The reason is because, there are no properly defined parentheses for the statement $p \land q \lor r$. We know that for propositional logic, we need properly defined expressions to talk about which one is being evaluated first. This expression can be defined as $p \land (q \lor r)$ or $(p \land q ) \lor r$. According to the parentheses row 3 and row 5 will arrive at different conclusions.
+
+\item \textbf{[10 points]} List all subformulas of the formula
+  $((p \land p) \lor q) \implies (((\neg r) \implies r) \implies (p
+  \land q))$.\\
+  p\\
+  q\\
+  r\\
+  $p \land p$\\
+  $(p \land p) \lor q$\\
+  $\neg r$\\
+  $(\neg r) \implies r)$\\
+  $p  \land q$\\
+  $((\neg r) \implies r) \implies (p
+  \land q)$\\
+  $((p \land p) \lor q) \implies (((\neg r) \implies r) \implies (p
+  \land q))$
+  
+\item \textbf{[10 points]} Compute and present the complete truth table of
+  the formula $(\neg p \lor q) \implies (p \implies \neg q)$.
+  
+    \begin{table}[!htbp]
+\renewcommand\arraystretch{0.8}
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+\begin{tabular}[c]{@{}c@{}}\textbf{p}\end{tabular} & \begin{tabular}[c]{@{}c@{}}\textbf{q}\end{tabular} & \begin{tabular}[c]{@{}c@{}}\textbf{$\neg p \lor q$}\end{tabular} & \begin{tabular}[c]{@{}c@{}}\textbf{$p \implies \neg q$}\end{tabular} & \begin{tabular}[c]{@{}c@{}}$(\neg p \lor q) \implies (p \implies \neg q)$\end{tabular} \\ \hline
+F & F & T & T & T   \\ \hline
+F & T & T & T & T  \\ \hline
+T & F & F & T & T  \\ \hline
+T & T & T & F & F   \\ \hline
+\end{tabular}
+\end{center}
+\caption{Truth Table}
+\label{tab:truth2}
+\end{table}
+
+\item \textbf{[10 points]} Consider the formula
+  $(p \lor q) \implies (q \implies p)$.
+  \begin{itemize}
+  \item \textbf{[2 points]} Is the formula satisfiable?
+  \\ Yes it is satisfiable.
+  \item \textbf{[3 points]} Justify your answer.
+  \\For any combination of truth values of $p$ and $q$, there is atleast one statement for which this formula holds true. This makes it satisfiable. 
+  \item \textbf{[2 points]} Is the formula valid?
+  \\Yes this formula is valid.
+  \item \textbf{[3 points]} Justify your answer.
+  \\For every combinations of truth values of $p$ and $q$, all statements hold true. This makes it valid.
+  \end{itemize}
+
+\item \textbf{[10 points total]} Consider the formula
+  $(q \land \neg r) \land (q \implies r)$.
+  \begin{itemize}
+  \item \textbf{[2 points]} Is the formula falsifiable?
+  \\ Yes it is falsifiable.
+  \item \textbf{[3 points]} Justify your answer.
+  \\For any combination of truth values of $q$ and $r$, there is atleast one statement for which this formula is false. This makes it falsifiable. 
+  \item \textbf{[2 points]} Is the formula unsatisfiable?
+  \\Yes this formula is unsatisfiable.
+  \item \textbf{[3 points]} Justify your answer.
+  \\For every combinations of truth values of $q$ and $r$, all statements hold false. This makes it unsatisfiable.
+  \end{itemize}
+
+\item \textbf{[10 points]} Show that the entailment claim
+  $p \lor (q \lor r), \neg p \lor r \models p \implies q$ is not
+  correct.  Justify your answer in terms of truth value assignments to
+  the propositions $p$, $q$, and $r$.
+      \begin{table}[!htbp]
+\renewcommand\arraystretch{0.8}
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|c|}
+\hline
+\begin{tabular}[c]{@{}c@{}}\textbf{p}\end{tabular} & \begin{tabular}[c]{@{}c@{}}\textbf{q}\end{tabular} & \begin{tabular}[c]{@{}c@{}}\textbf{r}\end{tabular} & \begin{tabular}[c]{@{}c@{}}\textbf{$p \lor (q \lor r)$}\end{tabular} & \begin{tabular}[c]{@{}c@{}}\textbf{$\neg p \lor r$}\end{tabular} & \begin{tabular}[c]{@{}c@{}}$(p \lor (q \lor r)) \land (\neg p \lor r)$\end{tabular} & \begin{tabular}[c]{@{}c@{}}$p \implies q$\end{tabular}\\ \hline
+F & F  & F & F &T &F &T \\ \hline
+F & F  & T & T &T &T &T \\ \hline
+F & T  & F & T &T &T &T \\ \hline
+F & T  & T & T &T &T &T \\ \hline
+T & F  & F & T &F &F &F \\ \hline
+T & F  & T & T &T &T &F\\ \hline
+T & T  & F & T &F &F &T \\ \hline
+T & T  & T & T &T & T&T \\ \hline
+\end{tabular}
+\end{center}
+\caption{Truth Table}
+\label{tab:truth3}
+\end{table}
+
+From the truth table given in Table \ref{tab:truth3}, we can see that for Row 7, left hand side we have true but it is not entailed in Right hand side. So we can say that entailment claim doesnt hold correct.
+
+\item \textbf{[10 points]} Does
+  $\models (p \lor q) \land (\neg p \lor r) \implies (q \lor r)$ hold?
+  Justify your answer.
+  
+        \begin{table}[!htbp]
+\renewcommand\arraystretch{0.8}
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|c|c|}
+\hline
+\begin{tabular}[c]{@{}c@{}}\textbf{p}\end{tabular} & \begin{tabular}[c]{@{}c@{}}\textbf{q}\end{tabular} & \begin{tabular}[c]{@{}c@{}}\textbf{r}\end{tabular} & \begin{tabular}[c]{@{}c@{}}\textbf{$ (p \lor q)$}\end{tabular} & \begin{tabular}[c]{@{}c@{}}\textbf{$\neg p \lor r$}\end{tabular} & \begin{tabular}[c]{@{}c@{}}$(p \lor q) \land (\neg p \lor r)$\end{tabular} & \begin{tabular}[c]{@{}c@{}}$ (q \lor r)$\end{tabular}& \begin{tabular}[c]{@{}c@{}}$(p \lor q) \land (\neg p \lor r) \implies (q \lor r)$\end{tabular}\\ \hline
+F & F  & F & F &T &F &F& T\\ \hline
+F & F  & T & F &T &F &T &T\\ \hline
+F & T  & F & T &T &T &T& T\\ \hline
+F & T  & T & T &T &T &T& T\\ \hline
+T & F  & F & T &F &F &F& T\\ \hline
+T & F  & T & T &T &T &T&T\\ \hline
+T & T  & F & T &F &F &T&T \\ \hline
+T & T  & T & T &T & T&T&T \\ \hline
+\end{tabular}
+\end{center}
+\caption{Truth Table}
+\label{tab:truth4}
+\end{table}
+From the truth table given in Table \ref{tab:truth4}, we can see that the Right hand side holds true for every possible truth values. So we can say that entailment claim does hold.
+
+
+\item \textbf{[20 points]} Are the sentences (A) $q \implies p$, (B)
+  $p \implies r$, and (C) $p \land r \implies q$ logically
+  independent?  Justify your answer formally.
+  
+  For any 2 statements $\alpha$, $\beta$ to be logically independent, we need to show $\alpha \land \neg \beta$ and $\neg \alpha \land \beta$ are both satisfiable. In this case we have 3 such statements which need to be shown they are logically independent.
+  
+  For First (A) and (B) to be logically independent, the truth values of $p=T, r=F, and q=T,F$ will make the condition (A) $\land \neg$ (B) TRUE. Similarly on the other hand, for the condition  $\neg$ (A) $\land$ (B), the truth values of $p=F, r=T,F, and q=T$ will make it TRUE. So, (A) and (B) are logically independent.
+  
+  Now (A) and (C) to be logically independent, the truth values of $p=F, r=T, and q=F$ will make the condition (A) $\land \neg$ (C) TRUE. Similarly on the other hand, for the condition  $\neg$ (A) $\land$ (C), the truth values of $p=F, r=T,F, and q=T$ will make it TRUE. So, (A) and (C) are logically independent.
+  
+  Now (B) and (C) to be logically independent, the truth values of $p=F, r=T, and q=F$ will make the condition (B) $\land \neg$ (C) TRUE. Similarly on the other hand, for the condition  $\neg$ (B) $\land$ (C), the truth values of $p=T, r=F, and q=T,F$ will make it TRUE. So, (B) and (C) are logically independent.
+  
+  Therefore, we can say that (A), (B) and (C) are logically independent.
+
+\end{enumerate}
+\end{document}

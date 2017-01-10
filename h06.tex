@@ -1,0 +1,100 @@
+\documentclass{article}
+\input{503macros.tex}
+
+
+\begin{document}
+\begin{center}
+  {\LARGE CSC 503 Homework Assignment 6}\\[1pc]
+  Out: September 22, 2016 \\
+  Due: September 29, 2016 \\
+  \unityid{aagrawa8}
+\end{center}
+
+
+\begin{enumerate}
+
+\item \textbf{[15 points]} Rewrite the formula
+  $[P(x,y) \land Q(x,y)] \lor [\neg R(y,x) \lor S(x)]$ in clausal form
+  set notation.
+  \begin{answer}
+  Distributing $\lor$ across the statements will result in  $[P(x,y) \lor \neg R(y,x) \lor S(x) ] \land [Q(x,y) \lor \neg R(y,x) \lor S(x) ]   $ \\
+  So in clausal form notation, it looks like,\\
+  $\{\{P(x,y) , \neg R(y,x), S(x)\},$\\
+  $\{Q(x,y), \neg R(y,x) , S(x)\}\}$
+  \end{answer}
+
+\item \textbf{[10 points]} Rewrite the statement
+  \begin{displaymath}
+    \{ \;
+    \{ R(x,z), R(y,z), R(x,y) \},
+    \;
+    \{ R(x,y), S(y,x), \neg T(x,x) \},
+    \;
+    \{ T(x,y), R(y,x) \}
+    \; \}
+  \end{displaymath}
+  so that the variables in each clause are standardized apart.
+  \begin{answer}
+    $\{ \{ R(x_1,z_1), R(y_1,z_1), R(x_1,y_1) \},$\\
+    $\{ R(x_2,y_2), S(y_2,x_2), \neg T(x_2,x_2) \},$\\
+    $\{ T(x_3,y_3), R(y_3,x_3) \}\}$
+  \end{answer}
+
+\item \textbf{[25 points]} Convert the formula
+  $\forall x\ P(x,y) \iff (\forall y\ (R(x,y) \implies Q(x,y)))$ to
+  negation normal form, showing the steps of the conversion.
+  \begin{answer}
+  Here the question can have multiple interpretations, depending on the brackets. So, I am considering $\forall x $ is associated with $P(x,y)$ not the whole statement. And $\forall y$ is outside the $(R(x,y) \implies Q(x,y))$ and when changing the implication will operate only within the brackets.\\
+  $\forall x\ P(x,y) \iff (\forall y\ (R(x,y) \implies Q(x,y)))$\\
+  $(\forall x\ P(x,y) \implies (\forall y\ (R(x,y) \implies Q(x,y)))) \land (\forall y\ (R(x,y) \implies Q(x,y)) \implies \forall x\ P(x,y) )$ \\
+  $(\forall x\ P(x,y) \implies (\forall y\ ( \neg R(x,y) \lor Q(x,y)))) \land (\forall y\ (\neg R(x,y) \lor Q(x,y)) \implies \forall x\ P(x,y) )$ \\
+  $(\neg [\forall x\ P(x,y)] \lor (\forall y\ ( \neg R(x,y) \lor Q(x,y)))) \land (\forall y\ (\neg R(x,y) \lor Q(x,y)) \implies \forall x\ P(x,y) )$ \\
+  $(\exists x\ \neg P(x,y) \lor (\forall y\ ( \neg R(x,y) \lor Q(x,y)))) \land (\neg [\forall y\  (\neg R(x,y) \lor Q(x,y))] \lor \forall x\ P(x,y) )$ \\
+  $(\exists x\ \neg P(x,y) \lor (\forall y\ ( \neg R(x,y) \lor Q(x,y)))) \land (\exists y\ \neg (\neg R(x,y) \lor Q(x,y)) \lor \forall x\ P(x,y) )$ \\
+ $(\exists x\ \neg P(x,y) \lor (\forall y\ ( \neg R(x,y) \lor Q(x,y)))) \land (\exists y\ (\neg \neg R(x,y) \land \neg Q(x,y)) \lor \forall x\ P(x,y) )$ \\ 
+ $(\exists x\ \neg P(x,y) \lor (\forall y\ ( \neg R(x,y) \lor Q(x,y)))) \land (\exists y\ ( R(x,y) \land \neg Q(x,y)) \lor \forall x\ P(x,y) )$ \\
+ \end{answer}
+
+\item \textbf{[25 points]} Convert the formula
+  $\exists x\ [(\forall y\ P(x,y)) \implies (\exists z\ Q(x,z))]$ to
+  prenex normal form, showing the steps of the conversion.
+    \begin{answer}
+    $\exists x\ [(\forall y\ P(x,y)) \implies (\exists z\ Q(x,z))]$\\
+    $\exists x \exists y \ [\ P(x,y) \implies (\exists z\ Q(x,z))]$\\
+    $\exists x \exists y \exists z \ [\ P(x,y) \implies \ Q(x,z)]$\\
+  \end{answer}
+
+\item \textbf{[25 points]} Convert
+  $\exists x\ \forall y\ ([P(x,y) \land (\forall z\ Q(y,z))] \implies
+  [\exists u\ \exists v\ (P(x,v) \land R(y,v))])$ to the language of
+  resolution, showing the conversion steps.  That is, first convert to
+  NNF, then Skolemize, then convert to PNF, then convert to CNF, then
+  convert to an open formula, and finally to clausal set notatation
+  standardized apart.
+  \begin{answer}
+  $\exists x\ \forall y\ ([P(x,y) \land (\forall z\ Q(y,z))] \implies [\exists u\ \exists v\ (P(x,v) \land R(y,v))])$\\
+  Converting to NNF form first,\\
+  $\exists x\ \forall y\ (\neg [P(x,y) \land (\forall z\ Q(y,z))] \lor [\exists u\ \exists v\ (P(x,v) \land R(y,v))])$\\
+  $\exists x\ \forall y\ ( [\neg P(x,y) \lor \neg (\forall z\ Q(y,z))] \lor [\exists u\ \exists v\ (P(x,v) \land R(y,v))])$\\
+  $\exists x\ \forall y\ ( [\neg P(x,y) \lor (\exists z\ \neg Q(y,z))] \lor [\exists u\ \exists v\ (P(x,v) \land R(y,v))])$\\
+  Skolemize the above statement,\\
+  $\exists x\ \forall y \exists z \exists u \exists v \ ( [\neg P(x,y) \lor \ \neg Q(y,z)] \lor [\  P(x,v) \land R(y,v)])$\\
+  Now replacing z by function f(y), and v by g(y).\\
+  $\exists x\ \forall y \ ( [\neg P(x,y) \lor \neg Q(y,f(y))] \lor [\  P(x,g(y)) \land R(y,g(y))])$\\
+  Now, for $\exists x$, replacing it with a constant 'c'. This will also bring it to PNF form\\
+  $\forall y \ ( [\neg P(c,y) \lor \neg Q(y,f(y))] \lor [\  P(c,g(y)) \land R(y,g(y))])$\\
+  Converting to CNF form,\\
+  $\forall y \ ( [\neg P(c,y) \lor \neg Q(y,f(y)) \lor P(c,g(y))] \land [\ \neg P(c,y) \lor \neg Q(y,f(y)) \lor  R(y,g(y))])$\\
+  Converting to open formula,\\
+    $ [\neg P(c,y) \lor \neg Q(y,f(y)) \lor P(c,g(y))] \land [\ \neg P(c,y) \lor \neg Q(y,f(y)) \lor  R(y,g(y))]$\\
+  Converting to Clausal set formula,\\
+    $ \{\{\neg P(c,y), \neg Q(y,f(y)), P(c,g(y))\},$ \\
+    $\{\neg P(c,y), \neg Q(y,f(y)), R(y,g(y))\}\}$\\
+    Standardized form\\
+    $ \{\{\neg P(c,y_1), \neg Q(y_1,f(y_1)), P(c,g(y_1))\},$ \\
+    $\{\neg P(c,y_2), \neg Q(y_2,f(y_2)), R(y_2,g(y_2))\}\}$\\
+  \end{answer}
+
+\end{enumerate}
+
+\end{document}

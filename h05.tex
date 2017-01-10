@@ -1,0 +1,138 @@
+\documentclass{article}
+\input{503macros.tex}
+
+
+\begin{document}
+\begin{center}
+  {\LARGE CSC 503 Homework Assignment 5}\\[1pc]
+  Out: September 8, 2016 \\
+  Due: September 15, 2016 \\
+  \unityid{aagrawa8}
+\end{center}
+
+
+\begin{enumerate}
+
+\item \textbf{[25 points]} Using only the basic natural deduction
+  rules, find a proof for the sequent
+  \begin{displaymath}
+    \forall x \forall y (\neg R(y) \implies S(x))
+    \turn
+    (\exists y \neg R(y)) \implies (\forall x S(x)).
+  \end{displaymath}
+    \begin{answer}
+  	\[
+  		\begin{nd}
+  			\hypo{1} {\forall x \forall y (\neg R(y) \implies S(x))} \premise{}
+  			\open
+  				\hypo{2} {\exists y \neg R(y)} \assumption{}
+  				\open[x_0]
+  					\hypo{3} {} \assumption{}
+  					\have{4} {\forall y (\neg R(y) \implies S(x_0)} \Ae {1}
+					\open[y_0] 
+						\hypo{5} {\neg R(y_0)} \assumption{}
+						\have{6} {\neg R(y_0) \implies S(x_0)} \Ae {4}
+						\have{7} {S(x_0)} \ie {5, 6}						 
+					\close  					  
+					\have{8} {S(x_0)} \Ee {2, 5-7}
+  				\close
+  				\have{9} {\forall x (S(x))} \Ai {3-8}
+  			\close
+  			\have{10} {\exists y \neg R(y)) \implies (\forall x S(x)} \ii {2-9}
+  		\end{nd}
+  	\]
+  	
+
+  \end{answer}
+
+\item \textbf{[25 points]} Using only the basic natural deduction
+  rules, find a proof for the sequent
+  \begin{displaymath}
+    \forall x P(a,x,x),
+    \forall z \forall y \forall x (P(x,y,z) \implies P(f(f(x)),y,f(z))) 
+    \turn
+    P(f(f(a)),a,f(a)).
+  \end{displaymath}
+  
+  \begin{answer}
+	\[
+		\begin{nd}
+			\hypo{1} {\forall x P(a,x,x)} \premise{}
+			\hypo{2} {\forall z \forall y \forall x (P(x, y, z) \implies
+			P(f(f(x)),y,f(z)))} \premise{}
+			\have{3} {P(a, a, a)} \Ae {1}
+			\have{4} {\forall y \forall x (P(x,y,a) \implies P(f(f(x)),y,f(a)))} \Ae {2}
+			\have{5} {\forall x (P(x,a,a) \implies P(f(f(x)),a,f(a)))} \Ae {4}
+			\have{6} {P(a,a,a) \implies P(f(f(a)),a,f(a))} \Ae {5}
+			\have{7} {P(f(f(a)),a,f(a))} \ie {3, 6}
+		\end{nd}
+	\]
+  	
+\end{answer}
+
+\item \textbf{[25 points]} Using only the basic natural deduction
+  rules, find a proof for the sequent
+  \begin{displaymath}
+    \exists x \forall y \forall z P(x,y,z)
+    \turn
+    \forall z \forall y \exists x P(x,y,z).
+  \end{displaymath}
+  \begin{answer}
+  	\[
+  		\begin{nd}
+  			\hypo{1} {\exists x \forall y \forall z P(x,y,z)} \premise{}
+  			\open[z_0]
+  			    \hypo{2} {} \assumption{}
+  			    \open[y_0]
+  			        \hypo{3} {} \assumption{}
+  			        \open[x_0]
+  			            \hypo{4} {\forall y \forall z P(x_0,y,z)} \assumption{}
+  			            \have{5}{\exists x P(x,y_0,z_0)} \Ei{4}
+  			       \close
+  			       \have{6}{\exists x P(x,y_0,z_0)} \Ee{1,4-5}
+  			    \close
+  			    \have{7}{\forall y \exists x P(x,y,z_0)} \Ai{2-6}
+  			\close
+  			\have{8}{\forall z \forall y \exists x P(x,y,z)} \Ai{2-7}
+  		\end{nd}
+  	\]
+  	
+
+  \end{answer}
+
+\item \textbf{[25 points]} Using only the basic natural deduction
+  rules, find a proof for the sequent
+  \begin{displaymath}
+    \forall x (P(x) \implies \neg R(x))
+    \turn
+    \neg( \exists x ( P(x) \land R(x))).
+  \end{displaymath}
+  
+  \begin{answer}
+  	\[
+  		\begin{nd}
+  			\hypo{1} {\forall x (P(x) \implies \neg R(x))} \premise{}
+  			\open
+  				\hypo{2} {\exists x ( P(x) \land R(x)} \assumption{}
+  				\open[x_0]
+					\hypo{6} { P(x_0) \land R(x_0)} \assumption{}
+					\have{6a}{P(x_0) \implies \neg R(x_0)} \Ae{1}
+					\have{7} {P(x_0)} \aeone{6} 						 
+					\have{8} {R(x_0)} \aetwo{6}
+					\have{8a}{ \neg R(x_0)} \ie{6a,7}
+  				    \have{8b}{\bot} \ne{8,8a}
+  				\close
+  				\have{10}{\neg (P(x_0) \land R(x_0))} \ni{6-8b}
+  				\have{11}{\neg (\exists x ( P(x) \land R(x))} \Ei{10}
+  				\have{12}{\bot} \ne{2,11}
+  			\close
+  			\have{13} {\neg (\exists x ( P(x) \land R(x))} \ni {2-12}
+  		\end{nd}
+  	\]
+  	
+
+  \end{answer}
+
+
+\end{enumerate}
+\end{document}

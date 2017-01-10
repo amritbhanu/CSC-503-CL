@@ -1,0 +1,130 @@
+\documentclass{article}
+\input{503macros.tex}
+
+\begin{document}
+\begin{center}
+  {\LARGE CSC 503 Homework Assignment 10}\\[1pc]
+  Out: November 8, 2016 \\
+  Due: November 15, 2016 \\
+  \unityid{aagrawa8}
+\end{center}
+
+\begin{enumerate}
+
+\item \textbf{[10 points]} List all subformulas of the CTL formula,
+  using the textbook binding priority conventions.
+  \begin{displaymath}
+    \Exists \NextX \All [ \All \Sometime (p \land r)
+    \Until \Exists \Forever (p \land q \implies
+    \All [p \Until \All \Forever r])].
+  \end{displaymath}
+  
+ \begin{answer}
+  \begin{itemize}
+
+  
+    \item $\Exists \NextX \All [ \All \Sometime (p \land r)
+    \Until \Exists \Forever (p \land q \implies
+    \All [p \Until \All \Forever r])]$
+    \item $\All [ \All \Sometime (p \land r)
+    \Until \Exists \Forever (p \land q \implies
+    \All [p \Until \All \Forever r])]$
+    \item $\All \Sometime (p \land r)$
+    \item $(p \land r)$
+    \item $p$
+    \item $r$
+    \item $\Exists \Forever (p \land q \implies
+    \All [p \Until \All \Forever r])$
+    \item $p \land q \implies
+    \All [p \Until \All \Forever r]$
+    \item $p \land q$
+    \item $q$
+    \item $\All [p \Until \All \Forever r]$
+    \item $\All \Forever r$
+    
+  \end{itemize} 
+ \end{answer}
+ 
+Answer the following questions concerning the truth of statements
+about the following transition model $M$.
+\begin{center}
+  \begin{tikzpicture}[>=stealth',shorten >=1pt,auto,node
+    distance=3cm]
+    \node[state,label=-135:$s_1$] (s1) {$a b$};
+    \node[state,label=-45:$s_2$] (s2) [right of=s1] {};
+    \node[state,label=-135:$s_3$] (s3) [below of=s1] {$a$};
+    \node[state,label=-45:$s_4$] (s4) [below of=s2] {$b$};
+    \path[->] 
+    (s1) edge  [loop left] node {} (s1)
+    (s1) edge              node {} (s3)
+    (s1) edge  [bend left] node {} (s2)
+    (s2) edge  [bend left] node {} (s4)
+    (s2) edge  [bend left] node {} (s1)
+    (s3) edge  [loop left] node {} (s3)
+    (s3) edge              node {} (s4)
+    (s4) edge  [bend left] node {} (s2);
+  \end{tikzpicture}
+  \\
+  {Model $M$}
+\end{center}
+
+\item \textbf{[10 points]} Does
+  $M, s_4 \models a \implies \All \Sometime \neg b$?  Explain why or
+  why not.
+  \begin{answer}
+  It is true. Literal $a$ is not in $s_4$ so left hand side of the implication will always be true.
+  \end{answer}
+
+\item \textbf{[10 points]} Does
+  $M, s_1 \models a \implies \All \Sometime \neg b$?  Explain why or
+  why not.
+  \begin{answer}
+  This is false. As in the path $(s_1)^\infty$, literal $a$ is true and literal $\neg b$ is false making the implication false.
+  \end{answer}
+
+\item \textbf{[10 points]} Does
+  $M, s_3 \models \Exists \Sometime (a \land b)$?  Explain why or why
+  not.
+  \begin{answer}
+  This will hold true when we have some path like $(s_3,s_4,s_2,(s_1)^\infty)$ where $a \land b$ is true sometime during this path.
+  \end{answer}
+
+\item \textbf{[10 points]} Does
+  $M, s_3 \models \Exists \Sometime \Exists \Next (\neg a \land \neg b)$?
+  Explain why or why not.
+  \begin{answer}
+  It will hold true. As there is a path in which at the next state itself we have $ (\neg a \land \neg b)$ true. And any path in $(s_3,s_4, (any))$ will hold true.
+  \end{answer}
+
+\item \textbf{[10 points]} Does $M, s_1 \models \neg \Exists
+  \Forever b$?  Explain why or why not.
+  \begin{answer}
+  It will be false. The path $(s_1)^\infty$ contains literal b throughout the path but we expected literal b to not be true.
+  \end{answer}
+  
+\item \textbf{[10 points]} Does $M, s_3 \models \neg \Exists
+  \Forever b$?  Explain why or why not.
+  \begin{answer}
+  It is true. Literal $b$ is not present in $s_3$, so, there is a path $(s_3)^\infty$ where literal $b$ will become false throughout.
+  \end{answer}
+  
+\item \textbf{[10 points]} Does $M, s_2 \models \Exists \Forever \All
+  \Sometime a$?  Explain why or why not.
+  \begin{answer}
+  It is false. For path $(s_2,s_4)^\infty$ we will never find literal $a$. And according to $\All \Sometime a$ we want literal $a$ sometime in all paths.
+  \end{answer}
+
+\item \textbf{[10 points]} Does $M, s_1 \models \Exists \Forever \All
+  \Sometime a$?  Explain why or why not.
+  \begin{answer}
+  It is true. As literal $a$ is present in $s_1$ and all paths will start from $s_1$.
+  \end{answer}
+
+\item \textbf{[10 points]} Does $M, s_3 \models \All
+  \NextX \All \Sometime (a \lor b)$?  Explain why or why not.
+  \begin{answer}
+  It is true. The next states from $s_3$ are $s_3$ and $s_4$ and either literal a or literal b will be contained in both the paths which are starting from those states.
+  \end{answer}
+\end{enumerate}
+
+\end{document}

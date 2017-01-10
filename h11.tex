@@ -1,0 +1,189 @@
+\documentclass{article}
+\input{503macros.tex}
+
+\begin{document}
+\begin{center}
+  {\LARGE CSC 503 Homework Assignment 11}\\[1pc]
+  Out: November 10, 2016 \\
+  Due: November 17, 2016 \\
+  \unityid{aagrawa8}
+\end{center}
+
+
+See the macro instructions document for examples of how to write
+program correctness proofs using the linear Fitch notation, such as
+the proof in Example 4.13.1 on page 277:
+\begin{displaymath}
+  \begin{nd}
+    \have{} {\Hcond{y = 5}}           \Precondition{}
+    \have{} {\Hcond{y + 1 = 6}}       \Implied{}
+    \code{x = y + 1;}
+    \have{} {\Hcond{x = 6}}           \Assignment{}
+  \end{nd}
+\end{displaymath}
+
+\begin{enumerate}
+
+\item \textbf{[20 points]} Recall that the arithmetic expressions in
+  the simple textbook programming language only refer to integers.
+  Use the proof rule for assignment and integer arithmetic entailment
+  as appropriate to show the validity of
+  \begin{displaymath}
+    \parturn \Hoare{y > z}{P}{y = 2z}.
+  \end{displaymath}
+  where $P$ is the program 
+  \begin{displaymath}
+    \begin{nd}
+      \code{x = z;}
+      \code{x = x + x - y;}
+      \code{x = x + y + y;}
+      \code{y = x - y;}
+    \end{nd}
+  \end{displaymath}
+
+\begin{answer}
+\begin{displaymath}
+  \begin{nd}
+    \have{} {\Hcond{y > z}}           \Precondition{}
+    \have{} {\Hcond{z+z=2z}}       \Implied{}
+    \code{x = z;}
+    \have{} {\Hcond{x + x =2z}}           \Implied{}
+    \have{} {\Hcond{x + x - y + y =2z}}           \Assignment{}
+    \code{x = x + x - y;}
+    \have{} {\Hcond{x + y =2z}}           \Implied{}
+    \have{} {\Hcond{x + y + y-y=2z}}           \Assignment{}
+    \code{x = x + y + y;}
+    \have{} {\Hcond{x-y=2z}}           \Assignment{}
+    \code{y = x - y;}
+    \have{} {\Hcond{y=2z}}           \Assignment{}
+  \end{nd}
+\end{displaymath}
+\end{answer}
+
+\newcommand{\sign}{\text{sign}}
+
+\item \textbf{[40 points]} Prove the validity of the sequent
+  $\parturn \Hoare{x \neq 0 \land y \neq 0 \land x < y}{Q}{z =
+    \sign(xy)}$ where $\sign(z)$ is 1 if $z$ is positive, -1 if $z$ is
+  negative, and 0 if $z$ is 0, and where the code of $Q$ is given by
+%  \begin{minipage}[t]{0.3\linewidth}
+    \begin{displaymath}
+      \begin{nd}
+        \code{if (0 < x) \{}
+        \open
+        \code{z = 1;}
+        \close
+        \code{\} else \{}
+        \open
+        \code{if (0 < y) \{}
+        \open
+        \code{z = -1;}
+        \close
+        \code{\} else \{}
+        \open
+        \code{z = 1;}
+        \close
+        \code{\};}
+        \close
+        \code{\};}
+      \end{nd}
+    \end{displaymath}
+
+
+\begin{answer}
+    \begin{displaymath}
+      \begin{nd}
+      \have{} {\Hcond{x \neq 0 \land y \neq 0 \land x < y}} \Precondition{}
+        \code{if (0 < x) \{}
+        \open
+        \have{} {\Hcond{x \neq 0 \land y \neq 0 \land x < y \land 0<x}} 
+        \IfStatement{}
+        \have{} {\Hcond{0 < y \land 0<x \land 0 < xy}} 
+        \Implied{}
+        \have{} {\Hcond{1 = sign(xy)}} 
+        \Implied{}
+        \code{z = 1;}
+        \have{} {\Hcond{z = sign(xy)}} 
+        \Assignment{}
+        \close
+        \code{\} else \{}
+        \open
+        \have{} {\Hcond{x \neq 0 \land y \neq 0 \land x < y \land 0 > x}} 
+        \IfStatement{}
+        \have{} {\Hcond{y \neq 0 \land x < y \land 0 > x}} 
+        \Implied{}
+        \code{if (0 < y) \{}
+        \open
+        \have{} {\Hcond{y \neq 0 \land x < y \land 0 > x \land 0 < y}} \IfStatement{}
+        \have{} {\Hcond{0 > x \land 0 < y \land 0 > xy}} \Implied{}
+        \have{} {\Hcond{-1 = sign(xy)}} 
+        \Implied{}
+        \code{z = -1;}
+        \have{} {\Hcond{z = sign(xy)}} 
+        \Assignment{}
+        \close
+        \code{\} else \{}
+        \open
+        \have{} {\Hcond{y \neq 0 \land x < y \land 0 > x \land 0 > y}} \IfStatement{}
+        \have{} {\Hcond{0 > x \land 0 > y \land 0 < xy}} \Implied{}
+        \have{} {\Hcond{1 = sign(xy)}} 
+        \Implied{}
+        \code{z = 1;}
+        \have{} {\Hcond{z = sign(xy)}} 
+        \Assignment{}
+        \close
+        \code{\};}
+        \close
+        \code{\};}
+        \have{} {\Hcond{z = sign(xy)}} 
+        \IfStatement{}
+      \end{nd}
+    \end{displaymath}
+\end{answer}
+
+\item \textbf{[40 points]} Prove the validity of the sequent
+  $\parturn \Hoare{y \neq 0}{R}{w = x^y}$ where the code of $R$ is
+  given by
+  \begin{displaymath}
+    \begin{nd}
+      \code{w = 1;}
+      \code{z = 0;}
+      \code{while (z != y) \{}
+      \open
+      \code{w = w * x;}
+      \code{z = z + 1;}
+      \close
+      \code{\};}
+    \end{nd}
+  \end{displaymath}
+
+
+\begin{answer}
+\begin{displaymath}
+    \begin{nd}
+      \have{} {\Hcond{y \neq 0}}           \Precondition{}
+      \have{} {\Hcond{1 = x^0}}         \Implied{}
+      \code{w = 1;}
+      \have{} {\Hcond{w = x^0}}         \Assignment{}
+      \code{z = 0;}
+      \have{} {\Hcond{w = x^z}}         \Assignment{}
+      \code{while (z != y) \{}
+      \open
+      \have{} {\Hcond{z \neq y \land w = x^z}}         \InvariantGuard{}
+      \have{} {\Hcond{w * x = x^{z+1}}} \Implied{}
+      \code{w = w * x;}
+      \have{} {\Hcond{w = x^{z+1}}} \Assignment{}
+      \code{z = z + 1;}
+      \have{} {\Hcond{w = x^z}} \Assignment{}
+      \close
+      \code{\};}
+      \have{} {\Hcond{\neg (z \neq y) \land w = x^z}} \PartialWhile{}
+      \have{} {\Hcond{w = x^y}} \Implied{}
+    \end{nd}
+  \end{displaymath}
+    
+\end{answer}
+
+\end{enumerate}
+
+\end{document}

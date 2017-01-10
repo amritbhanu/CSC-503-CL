@@ -1,0 +1,163 @@
+\documentclass{article}
+\input{503macros.tex}
+
+%https://github.com/parthsatra/Homework/tree/master/Computational%20Logic
+\begin{document}
+\begin{center}
+  {\LARGE CSC 503 Homework Assignment 2}\\[1pc]
+  Out: August 25, 2016 \\
+  Due: September 1, 2016 \\
+  \unityid{aagrawa8}
+\end{center}
+\newcommand\tab[1][1cm]{\hspace*{#1}}
+Prove the validity of the following sequents.  Use only the basic
+rules of natural deduction (no derived rules).
+
+\begin{enumerate}
+
+\item \textbf{[10 points]}
+  $\turn (p \implies q) \implies (p \implies (p \land q))$
+  \begin{answer}
+  	\[
+  		\begin{nd}
+  			\hypo{1} {p \implies q} \assumption{}
+  			\open 
+  				\hypo{2a} {p} \assumption{}
+  				\have{2b} {q} \ie {1, 2a}
+  				\have{2c} {p \land q} \ai {2a, 2b}
+  			\close
+  			\have{3} {p \implies (p \land q)} \ii{2a-2c}
+  			\have{4} {(p \implies q) \implies (p \implies (p \land q))} \ii{1-3}
+  		\end{nd}
+  	\]
+  \end{answer}
+
+\item \textbf{[15 points]}
+  $q \implies p \turn q \implies (p \implies q)$
+  
+  \begin{answer}
+  	\[
+  		\begin{nd}
+  			\hypo{1} {q \implies p} \premise{}
+  			\open 
+  				\hypo{2a} {q} \assumption{}
+  				\have{2b} {p} \ie {1, 2a}
+  				\open
+  				    \hypo{3a} {\neg q} \assumption{}
+  				    \have{3b} {\perp} \ne{2a, 3a}
+  				\close
+  				\have{2c} {q} \ni {3a-3b}
+  				\have{2d}{p \implies q} \ii{2b-2c}
+  			\close
+  			\have{3} {q \implies (p \implies q)} \ii{1-2d}
+  		\end{nd}
+  	\]
+  \end{answer}
+  
+  
+\item \textbf{[15 points]}
+  $ \neg p \implies (\neg q \implies \neg r) \turn (\neg p \implies
+  \neg q) \implies (\neg p \implies \neg r)$
+  
+  \begin{answer}
+  	\[
+  		\begin{nd}
+  			\hypo{1} {\neg p \implies (\neg q \implies \neg r)} \premise{}
+  			\open 
+  				    \hypo{3a} {\neg p \implies \neg q} \assumption{}
+  				    \open
+      				    \hypo{3b}{\neg p} \assumption{}
+      				    
+      				    \have{3c}{\neg q} \ie{3a,3b}
+      				    \have{3d}{\neg q \implies \neg r} \ie{3b,1}
+      				    \have{3e}{\neg r} \ie{3d, 3c}
+      				\close
+      				\have{4}{\neg p \implies \neg r} \ii{3b-3e}
+  			\close
+  			\have{5}{(\neg p \implies \neg q)\implies (\neg p \implies \neg r) } \ii{3a-4}
+  		\end{nd}
+  	\]
+  \end{answer}
+  
+  
+\item \textbf{[30 points]}
+  $p \lor q, p \implies r \lor s, q \implies r \lor s, r \implies t, s
+  \implies t \turn t$
+  \begin{answer}
+  	\[
+  		\begin{nd}
+  			\hypo{1} {p \lor q} \premise{}
+  			\hypo{2} {p \implies r \lor s} \premise{}
+  			\hypo{3} {q \implies r \lor s} \premise{}
+  			\hypo{4} {r \implies t} \premise{}
+  			\hypo{5} {s \implies t} \premise{}
+  			\open 
+  				\hypo{2a} {p} \assumption{}
+  				\have{2b} {r \lor s} \ie {2, 2a}
+  				\open
+  				    \hypo{3a} {r} \assumption{}
+  				    \have{3b} {t} \ie{4, 3a}
+  				\close
+  				\open
+  				    \hypo{4a} {s} \assumption{}
+  				    \have{4b} {t} \ie{5, 4a}
+  				\close
+  				\have{6}{t} \oe{3b,4b}
+  			\close
+  			\open
+  				\hypo{5a} {q} \assumption{}
+  				\have{5b} {r \lor s} \ie {2, 5a}
+  				\open
+  				    \hypo{7a} {r} \assumption{}
+  				    \have{7b} {t} \ie{4, 7a}
+  				\close
+  				\open
+  				    \hypo{8a} {s} \assumption{}
+  				    \have{8b} {t} \ie{5, 8a}
+  				\close
+  				\have{9}{t} \oe{7b,8b}
+  			\close
+  			\have{10}{t} \oe{6,9}
+  		\end{nd}
+  	\]
+  \end{answer}
+  
+
+\item \textbf{[30 points]}
+  $r \implies (p \lor q), p \implies s, \neg q, \neg s \turn \neg r$
+  \begin{answer}
+  	\[
+  		\begin{nd}
+  			\hypo{1} {r \implies (p \lor q)} \premise{}
+  			\hypo{2} {p \implies s} \premise{}
+  			\hypo{3} {\neg q} \premise{}
+  			\hypo{4} {\neg s} \premise{}
+  			\open 
+  				\hypo{2a} {p} \assumption{}
+  				\have{2b} {s} \ie {2, 2a}
+  				\have{2c} {\perp} \ne {4, 2b}
+  			\close
+  			\have{5} {\neg p} \ni {2a-2c}
+  			\open
+  			    \hypo{6a}{r} \assumption{}
+  			    \have{6b}{p \lor q} \ie{1,6a}
+  			    \open
+  			        \hypo{7a}{p} \assumption{}
+  			        \have{7b}{\perp} \ne{5,7a}
+  			    \close
+  			    \open
+  			        \hypo{8a}{q} \assumption{}
+  			        \have{8b}{\perp} \ne{3,8a}
+  			    \close
+  			    \have{6c}{\perp} \oe{6b-8b}
+  			   
+  			\close
+  			\have{9}{\neg r} \ni{6a-6c}
+  				
+  		\end{nd}
+  	\]
+  \end{answer}
+
+\end{enumerate}
+
+\end{document}
