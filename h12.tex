@@ -1,0 +1,132 @@
+\documentclass{article}
+\input{503macros.tex}
+
+\begin{document}
+\begin{center}
+  {\LARGE CSC 503 Homework Assignment 12}\\[1pc]
+  Out: November 15, 2016 \\
+  Due: November 22, 2016 \\
+  \unityid{aagrawa8}
+\end{center}
+
+\def\Bi{\by{$\Box$i}}
+\def\Be{\by{$\Box$e}}
+
+In modal logic proofs in LaTeX, use the natural deduction
+justifications \verb+\Bi+ and \verb+\Be+ to indicate $\Box$
+introduction and elimination, respectively.  Use \verb+\open[x]+ to
+introduce a modal context for the world $x$.
+
+\begin{enumerate}
+
+\item  Consider the modal logic formula
+  $\Diamond\Box p \implies \Box\Diamond p$.
+  \begin{enumerate}
+\item \textbf{[10 points]} Construct a modal frame of interpretation
+    $M$ that forces (satisfies)
+    $\Diamond\Box p \implies \Box\Diamond p$.
+    \begin{answer}
+    M can be defined as: \\
+    $(W,R,L)$ with $W = \{x\}, R = \{\}$, and $L(x) =\{\}$. 
+    \end{answer}
+
+  \item \textbf{[10 points]} Explain why $M$ forces
+    $\Diamond\Box p \implies \Box\Diamond p$.
+    \begin{answer}
+    This world has got only one set $x$. There are no other worlds which are accessible from $x$, so $x$ forces $\Box \phi$. Here it forces $\Box \Diamond p$ which makes the right hand side of the implication true in $x$. This makes the implication true in $M$.
+    \end{answer}
+
+  \item \textbf{[10 points]} Present a formal modal frame of
+    interpretation $M'$ that does not force
+    $\Diamond\Box p \implies \Box\Diamond p$.
+    \begin{answer}
+    Let the model $M'$ defined as: \\
+    $(W',R',L')$ with $W' = \{x,y,z\}, R' = \{(x,y),(x,z)\}$, and $L'(x) =\{\}, L'(y) = \{p\}, L'(z) = \{\}$.
+    \end{answer}
+
+  \item \textbf{[10 points]} Explain why $M'$ does not force
+    $\Diamond\Box p \implies \Box\Diamond p$.
+    \begin{answer}
+    $x$ forces $\Diamond \Box p$ as $y$ forces $\Box p$ since $y$ is accessible from $x$. However, $x$ does not force $\Box \Diamond p$ as $p$ is false in $z$ and $z$ is accessible from $x$. The left hand side of the implication is true while the right hand side is false at $x$ thereby this $M'$ does not force the implication.
+    \end{answer}
+  \end{enumerate}
+
+
+\item \textbf{[30 points]} Using only basic inference rules of
+  propositional logic plus the rules for $\Box$, give a natural
+  deduction proof of the sequent
+  \begin{displaymath}
+    \turn \Box (p \implies q) \implies
+    (\Box (q \implies r) \implies \Box (p \implies r))
+  \end{displaymath}
+  \begin{answer}
+  \[
+  	\begin{nd}
+  	\open
+  	\hypo{1}  {\Box (p \implies q)}	            \assumption{}
+  	\open
+  	\hypo{2}  {\Box (q \implies r)}    			\assumption{}
+  	\open[x]
+  	\have{3} { p \implies q}				    \Be{1}
+  	\have{4} {q \implies r}	        	        \Be{2}
+  	\open[]
+  	\hypo{5} {p} 	                            \assumption{}
+  	\have{6} {q} 	                            \ie{5,3}
+  	\have{7} {r}                                \ie{6,4}
+  	\close
+  	\have{8} {p \implies r} 	                \ii{5-7}
+  	\close
+  	\have{9} {\Box (p \implies r)} 	            \Bi{3-8}
+  	\close
+  	\have{10} {\Box (q \implies r) \implies \Box (p \implies r)}     \ii{2-9}
+  	\close
+  	\have{11} {\Box (p \implies q) \implies
+    (\Box (q \implies r) \implies \Box (p \implies r))}     \ii{1-10}
+  	\end{nd}
+  	\]
+    \end{answer}
+
+\item \textbf{[30 points]} Using only basic inference rules of
+  propositional logic plus the rules for $\Box$, give a natural
+  deduction proof of the sequent
+  \begin{displaymath}
+    \turn \Box (p \implies q) \implies (\Diamond p \implies \Diamond q)
+  \end{displaymath}
+  First translate the statement using only the $\Box$ modality.
+  \begin{center}
+  $\Box (p \implies q) \implies ((\neg \Box \neg p) \implies (\neg \Box \neg q))$
+  \end{center}
+  \begin{answer}
+  \[
+  	\begin{nd}
+  	\open
+  	\hypo{1} {\Box (p \implies q)}	                \assumption{}
+  	\open
+  	\hypo{2} {\neg \Box \neg p}    	        		\assumption{}
+  	\open
+  	\hypo{3} {\Box \neg q}			            	\assumption{}
+  	\open[x]
+  	\have{4} {p \implies q}	                    	\Be{1}
+  	\have{5} {\neg q}	                    	    \Be{3}
+  	\open
+  	\hypo{6} {p} 	                                \assumption{}
+  	\have{7} {q} 	                                \ie{6,4}
+  	\have{8} {\bot}                                 \ne{5,7}
+  	\close                                          
+  	\have{9} {\neg p} 	                            \ni{6-8}
+  	\close
+  	\have{10} {\Box \neg p} 	                    \Bi{4-9}
+  	\have{11} {\bot}                                \ne{2,10}
+  	\close
+  	\have {12} {\neg \Box \neg q}                   \ni{3-11}
+  	\close
+  	\have {13} {(\neg \Box \neg p) \implies (\neg \Box \neg q)}                   \ni{2-12}
+  	\close
+  	\have{14} {\Box (p \implies q) \implies ((\neg \Box \neg p) \implies (\neg \Box \neg q))}     \ii{1-13}
+  	\end{nd}
+  	\]
+    \end{answer}
+
+\end{enumerate}
+
+\end{document}
